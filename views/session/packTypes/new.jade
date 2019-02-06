@@ -25,29 +25,25 @@ block contenido
 						label(for="title") Título
 						input(type="text" name="title" placeholder="Título" id="title" class="form-control")
 					input(type="hidden" id="zonesString" name="zonesString" value="")
-					div(class="form-check")
-						input(type="checkbox" class="form-check-input" name="newZone" id="newZone")
-						select(name="zoneTypes" id="zoneTypes")
-							for tipo in tipos
-								option(class="text-secondary" value=tipo)=tipo
-					div(class="form-check")
-						input(type="checkbox" class="form-check-input" name="newZone" id="newZone")
-						select(name="zoneTypes" id="zoneTypes")
-							for tipo in tipos
-								option(class="text-secondary" value=tipo)=tipo
-					div(class="form-check")
-						input(type="checkbox" class="form-check-input" name="newZone" id="newZone")
-						select(name="zoneTypes" id="zoneTypes")
-							for tipo in tipos
-								option(class="text-secondary" value=tipo)=tipo
-					div(class="form-check")
-						input(type="checkbox" class="form-check-input" name="newZone" id="newZone")
-						select(name="zoneTypes" id="zoneTypes")
-							for tipo in tipos
-								option(class="text-secondary" value=tipo)=tipo
 					div(class="form-group")
-						label(for="nSessions") Cantidad de módulos
+						label(for="nSessions") Cantidad de zonas
 						input(type="number" name="nSessions" placeholder="Ingresa la cantidad de sesiones" id="nSessions" class="form-control")
+					div(class="form-group" id="zoneNumber")
+						select(class="selectpicker" name="zoneTypes" id="zoneTypes" multiple)
+							for tipo in tipos
+								option(class="text-secondary" value=tipo)=tipo
 					div(class="form-group text-right top-space")
 						button(type="submit" class="btn btn-outline-success btn-lg" data-toggle="tooltip" data-placement="top" title="Enviar")
 							i(class="fa fa-check-square-o")
+
+					script.
+						$(document).ready(function() {
+							$("#nSessions").change(function(e){
+								if (e.originalEvent) {
+									
+								}
+								else {
+
+								}
+							});
+						});

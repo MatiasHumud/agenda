@@ -11,6 +11,7 @@ var router_doc = require("./routes/router_doc");
 var router_org = require("./routes/router_org");
 var router_svc = require("./routes/router_svc");
 var router_hours = require("./routes/router_hours");
+var router_packTypes = require("./routes/router_packTypes");
 var session_middleware = require("./middlewares/sessions");
 var methodOverride = require("method-override");
 var RedisStore = require("connect-redis")(session);
@@ -112,5 +113,6 @@ app.use("/session/documentos", router_doc);
 app.use("/session/org", router_org);
 app.use("/session/servicios", router_svc);
 app.use("/session/horarios", router_hours);
+app.use("/session/packTypes", router_packTypes);
 
 server.listen(3000);

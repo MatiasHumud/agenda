@@ -16,16 +16,16 @@ var client = redis.createClient();
 // Assign "availableSelection" middleware to every packType creation request
 router.all("/new", availableSelection);
 router.get("/new", function(req, res){
-	res.render("session/packType/new", { tipos: res.locals.tipos });
+	res.render("session/packTypes/new", { tipos: res.locals.tipos });
 });
 
-// Assign "packTypeFinder" middleware to every packType/id request 
+// Assign "packTypeFinder" middleware to every packTypes/id request 
 router.all("/:id*", packTypeFinder);
-// Assign "availableSelection" middleware to every packType/id/edit request 
+// Assign "availableSelection" middleware to every packTypes/id/edit request 
 router.all("/:id/edit", availableSelection);
 // Despliega el formulario para edición de un packType específico
 router.get("/:id/edit", function(req, res){
-	res.render("session/packType/edit", { packType: res.locals.packType });
+	res.render("session/packTypes/edit", { packType: res.locals.packType });
 });
 
 // Assign "packTypeCollectionFinder" middleware to every packType collection request
@@ -34,7 +34,7 @@ router.all("/", packTypeCollectionFinder);
 //CRUD packs específicos
 router.route("/:id")
 	.get(function(req, res){//Mostrar documento seleccionado
-		res.render("session/packType/show", {packType: res.locals.packType});
+		res.render("session/packTypes/show", {packType: res.locals.packType});
 	})
 	.put(function(req, res){//Editar documento seleccionado
 		res.locals.packType.title = req.body.title;
@@ -44,28 +44,28 @@ router.route("/:id")
 
 		res.locals.packType.save(function(err){
 			if(!err){
-				res.redirect("/session/packType/");	
+				res.redirect("/session/packTypes/");	
 			}
 			else{
 				console.log(err);
-				res.redirect("/session/packType/"+req.params.id+"/edit");
+				res.redirect("/session/packTypes/"+req.params.id+"/edit");
 			}				
 		})
 	})
 	.delete(function(req, res){//Borrar pack seleccionado
 		PackType.findOneAndRemove({_id: req.params.id}, function(err){
 			if(!err){
-				res.redirect("/session/packType");
+				res.redirect("/session/packTypes");
 			}
 			else{
-				res.redirect("/session/packType/"+req.params.id)
+				res.redirect("/session/packTypes/"+req.params.id)
 			}
 		});
 	});
 //CRUD colección de packTypes propios
 router.route("/")
 	.get(function(req, res){//Retorna todos los packTypes del usuario
-		res.render("session/packType/collection", {packTypes: res.locals.packTypes});
+		res.render("session/packTypes/collection", {packTypes: res.locals.packTypes});
 	})
 	.post(function(req, res){//Crea un nuevo packTypes
 		var packType = new PackType({
@@ -78,7 +78,7 @@ router.route("/")
 		packType.save(function(err){
 			if(!err){
 				client.publish("packType", JSON.stringify(packType));
-				res.redirect("/session/packType/"+packType._id);
+				res.redirect("/session/packTypes/"+packType._id);
 			}
 			else{
 				console.log("error creando packType");

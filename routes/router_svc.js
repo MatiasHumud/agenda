@@ -1,9 +1,9 @@
 var express = require("express");
 var Service = require("../models/service").Service;
 var router = express.Router();
-var availableServices = require("../middlewares/available-sel-services");
-var serviceFinder = require("../middlewares/find-service");
-var svcCollFinder = require("../middlewares/find-service-collection");
+var availableServices = require("../middlewares/services/available-sel");
+var serviceFinder = require("../middlewares/services/find-document");
+var svcCollFinder = require("../middlewares/services/find-collection");
 var redis = require("redis");
 
 var client = redis.createClient();
