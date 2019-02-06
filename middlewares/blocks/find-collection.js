@@ -1,5 +1,5 @@
-var Documento = require("../models/documento").Documento;
-var ownerCheck = require("./document-permission");
+var Documento = require("../../models/documento").Documento;
+var ownerCheck = require("../document-permission");
 
 module.exports = function(req, res, next){
 	switch(res.locals.user.permission){

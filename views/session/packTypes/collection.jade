@@ -1,0 +1,58 @@
+extends ../../layout.jade
+
+block contenido
+	-if (user.permission == "Admin") 
+		include ../session_permission/adminActions.jade
+	-else if (user.permission == "Branch")
+		include ../session_permission/branchActions.jade
+	-else if (user.permission == "Resource")
+		include ../session_permission/resourceActions.jade
+	-else
+		include ../session_permission/userActions.jade
+
+	main
+		div(class="container d-flex top-space")
+			div(class="h2 p-2") Mis Tipos de Pack
+			div(class="ml-auto p-2")
+				a(href="/session/packTypes/new" class="btn btn-default btn-outline-primary btn-lg" data-toggle="tooltip" data-placement="top" title="Nuevo tipo de pack")
+					i(class="fa fa-plus-square-o")
+		div(class="container mid-space")
+			table(class="table table-hover table-bordered table-responsive rounded") 
+				thead(class="thead-light text-center")
+					tr
+						th(class="col text-center")
+							h5 Título pack
+						th(class="col text-center")
+							h5 #Sesiones
+						th(class="col text-center")
+							h5 Acción
+				tbody(id="packType")
+					for packType in packTypes.reverse()
+						tr
+							td
+								a(href="/session/packTypes/#{packType._id}")
+									h5(class="text-info") Título: #{packType.title}
+							td
+								h5(class="text-secondary") #{packType.nSessions}
+							td
+								form
+									div(class="btn-group" role="group")
+										button(type="submit" formaction="/session/packTypes/#{packType._id}/edit" class="btn btn-outline-dark btn-lg" data-toggle="tooltip" data-placement="top" title="Editar")
+											i(class="fa fa-pencil-square-o")
+										button(type="submit" formaction="/session/packTypes/#{packType._id}?_method=DELETE" formmethod="POST" class="btn btn-outline-danger btn-lg" data-toggle="tooltip" data-placement="top" title="Eliminar")
+											i(class="fa fa-trash-o")
+					script(id="packType-template" type="text/x-handlebars-template")
+						tr
+							td
+								a(href="/session/packTypes/{{packType._id}}")
+									h5(class="text-info") Título: {{title}}
+							td
+								h5(class="text-secondary") {{nSessions}}
+							td
+								form
+									div(class="btn-group" role="group")
+										button(type="submit" formaction="/session/packTypes/{{packType._id}}/edit" class="btn btn-outline-dark btn-lg" data-toggle="tooltip" data-placement="top" title="Editar")
+											i(class="fa fa-pencil-square-o")
+										button(type="submit" formaction="/session/packTypes/{{packType._id}}?_method=DELETE" formmethod="POST" class="btn btn-outline-danger btn-lg" data-toggle="tooltip" data-placement="top" title="Eliminar")
+											i(class="fa fa-trash-o")
+					script(src="/public/js/packType.js")

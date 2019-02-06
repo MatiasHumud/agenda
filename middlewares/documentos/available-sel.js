@@ -1,5 +1,5 @@
-var User = require("../models/user").User;
-var Service = require("../models/service").Service;
+var User = require("../../models/user").User;
+var Service = require("../../models/service").Service;
 //var isEditable = require("./is-editable");
 
 module.exports = function(req, res, next){

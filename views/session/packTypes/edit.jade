@@ -1,0 +1,47 @@
+extends ../../layout.jade
+
+block contenido
+	-if (user.permission == "Admin") 
+		include ../session_permission/adminActions.jade
+	-else if (user.permission == "Branch")
+		include ../session_permission/branchActions.jade
+	-else if (user.permission == "Resource")
+		include ../session_permission/resourceActions.jade
+	-else
+		include ../session_permission/userActions.jade
+
+	main
+		h1(class="text-center") Editar Tipo de Pack
+		div(class="container mx-auto col-xs-12 col-sm-6 top-space")
+			div(class="col-sm-6" style="height:130px;")
+				form(action="/session/packTypes/#{packType.id}?_method=PUT" method="POST")
+					div(class="form-group")
+						label(for="title") Título
+						input(type="text" name="title" id="title" class="form-control" value="#{packType.title}")
+					input(type="hidden" id="zonesString" name="zonesString" value="")
+					div(class="form-check")
+						input(type="checkbox" class="form-check-input" name="newZone" id="newZone")
+						select(name="zoneTypes" id="zoneTypes")
+							for tipo in tipos
+								option(class="text-secondary" value=tipo)=tipo
+					div(class="form-check")
+						input(type="checkbox" class="form-check-input" name="newZone" id="newZone")
+						select(name="zoneTypes" id="zoneTypes")
+							for tipo in tipos
+								option(class="text-secondary" value=tipo)=tipo
+					div(class="form-check")
+						input(type="checkbox" class="form-check-input" name="newZone" id="newZone")
+						select(name="zoneTypes" id="zoneTypes")
+							for tipo in tipos
+								option(class="text-secondary" value=tipo)=tipo
+					div(class="form-check")
+						input(type="checkbox" class="form-check-input" name="newZone" id="newZone")
+						select(name="zoneTypes" id="zoneTypes")
+							for tipo in tipos
+								option(class="text-secondary" value=tipo)=tipo
+					div(class="form-group")
+						label(for="nSessions") Cantidad de módulos
+						input(type="number" name="nSessions" id="nSessions" class="form-control" value="#{packType.nSessions}")
+					div(class="form-group text-right top-space")
+						button(type="submit" class="btn btn-outline-success btn-lg" data-toggle="tooltip" data-placement="top" title="Enviar")
+							i(class="fa fa-check-square-o")

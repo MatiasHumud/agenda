@@ -1,5 +1,4 @@
-var Service = require("../models/service").Service;
-//var ownerCheck = require("./document-permission");
+var Service = require("../../models/service").Service;
 
 module.exports = function(req, res, next){
 	switch(res.locals.user.permission){

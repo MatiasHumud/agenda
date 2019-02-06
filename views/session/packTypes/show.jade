@@ -1,0 +1,15 @@
+extends ../../layout.jade
+
+block contenido
+	-if (user.permission == "Admin") 
+		include ../session_permission/adminActions.jade
+	-else if (user.permission == "Branch")
+		include ../session_permission/branchActions.jade
+	-else if (user.permission == "Resource")
+		include ../session_permission/resourceActions.jade
+	-else
+		include ../session_permission/userActions.jade
+
+	main
+		div(class="container")
+			h5 #{packType}

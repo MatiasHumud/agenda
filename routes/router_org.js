@@ -2,9 +2,9 @@ var express = require("express");
 var User = require("../models/user").User;
 var Resource = require("../models/user").Resource;
 var router = express.Router();
-var availablePermissions = require("../middlewares/available-sel-org");
-var memberFinder = require("../middlewares/find-member");
-var staffFinder = require("../middlewares/find-staff-collection");
+var availablePermissions = require("../middlewares/org/available-sel");
+var memberFinder = require("../middlewares/org/find-document");
+var staffFinder = require("../middlewares/org/find-collection");
 var redis = require("redis");
 
 var client = redis.createClient();

@@ -1,4 +1,4 @@
-var Service = require("../models/service").Service;
+var Service = require("../../models/service").Service;
 //var ownerCheck = require("./document-permission");
 
 module.exports = function(req, res, next){

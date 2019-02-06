@@ -5,10 +5,10 @@ var Service = require("../models/service").Service;
 var Event = require("../models/event").Event;
 var router = express.Router();
 var fs = require("fs");
-var documentFinder = require("../middlewares/find-document");
-var docCollectionFinder = require("../middlewares/find-doc-collection");
+var documentFinder = require("../middlewares/documents/find-document");
+var docCollectionFinder = require("../middlewares/documents/find-collection");
+var availableSelection = require("../middlewares/documents/available-sel");
 var ressEventFinder = require("../middlewares/resource-doc-collection");
-var availableSelection = require("../middlewares/available-sel-doc");
 var redis = require("redis");
 var moment = require("moment");
 
