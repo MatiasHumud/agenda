@@ -29,10 +29,11 @@ block contenido
 								option(class="text-secondary" value="undefined" disabled selected) Seleccione un usuario
 								for user in users
 									option(class="text-secondary" value=user._id)=user.name
-					div(class="form-group mb-5" id="svcContainer" style="display:none;")
-						label(for="svc") Selecciona uno o varios packs:
-						select(class="form-control selectpicker" name="svc" id="svc" multiple)
+					div(class="form-group mb-5" id="packContainer" style="display:none;")
+						label(for="pack") Selecciona uno o varios packs:
+						select(class="form-control selectpicker" name="pack" id="pack" multiple)
 					div(class="selection-surface" id="selectionSurface" style="display:none;")
+						input(type="hidden" id="svc" name="svc" value=1)
 						p Haz click sobre una zona para agregarla. Haz click de nuevo sobre dicha zona para removerla.
 						div(class="human-body" id="femaleBody" style="display:none;")
 							nav(class="nav nav-pills nav-fill")
@@ -40,161 +41,26 @@ block contenido
 								a(class="nav-item nav-link" id="femalePillsBack" data-toggle="tab" href="#femaleBodyBack" role="tab" aria-controls="femaleBodyBack" aria-selected="false") Espalda
 							div(class="tab-content" id="femaleTabContent")
 								div(class="tab-pane fade show active" id="femaleBodyFront" role="tabpanel" aria-labelledby="femalePillsFront")
-									svg(class="svg-body" viewBox="0 0 30 60")
+									svg(class="svg-body" viewBox="0 0 30 60" id="svgFrontM")
 										image(href="/public/femalebody_front.jpg" x="0" y="5" height="50")
-										// L
-										g(title="Piernas completas" data-size="L" data-gender="female")
-											polygon(points="11.86,32 16.34,32 16.24,34 16.2,34.3 16.1,34.8 16.1,35.2 16.1,35.7 16.1,36.2 16.13,36.7 16.15,37.1 16.15,37.5 16.2,38 16.2,38.5 16.2,39 16.1,39.5 16,40 15.9,40.5 16,41 16,42.5 15.9,43 15.9,42.5 15.8,44 15.6,46 15.5,48 15.85,49.5 15.9,50 14.2,50 14.1,49.3 14.2,49 14,48 13.9,47 13.48,45 13.35,44.5 13.28,44 13.21,43.5 13.1,43 13.03,42 13.06,41 13.1,40.5 13.25,40 13.3,39.5 13.12,38")
-											polygon(points="16.95,32 21.07,32 21,32.5 20.85,33 20.7,33.6 20.6,34 20.5,34.7 20.3,35.5 20.2,36 20.05,36.7 19.95,37.4 19.85,38.2 19.78,39 19.65,39.8 19.62,40.6 19.7,41.8 19.7,42.3 19.6,43 19.5,43.8 19.3,44.8 19.1,45.8 18.9,46.8 18.7,47.8 18.4,48.8 18.3,49.2 18.3,50 16.45,50 16.6,50 16.8,49 17,48 17.02,47.5 17,47 16.9,46 16.8,44.5 16.7,43 16.8,42 16.85,41 16.85,40.5 16.68,38 16.75,37.5 16.8,37 17.12,35 17.08,33")
-										// M
-										g(title="Brazos completos" data-size="M" data-gender="female")
-											polygon(points="12.4,13.6 12,13.6 11.4,13.8 10,15 9.2,16 8.8,16.5 8.6,16.75 8.2,17.1 7.45,17.8 7,18.32 6.45,18.8 6,19.4 5.8,19.7 5.7,20 5.7,20.5 5.95,21 6.35,21.5 6.58,21.8 6.8,22 7,22.2 7.15,22.4 7.55,22.8 7.7,22.9 8.4,23.4 8.9,23.8 9.2,24.0 9.4,24.2 9.6,24.4 9.95,22.95 9.4,22.43 9.2,22.25 8.8,21.75 8.5,21.35 8.2,20.9 7.9,20.4 7.75,20.2 7.73,20.1 7.9,19.9 8.4,19.5 9,18.85 9.5,18.35 10,17.85 10.4,17.48 10.65,17.3 10.84,16.5")
-											polygon(points="19.5,13.62 20,13.6 20.5,13.6 20.9,13.7 21,13.8 21.4,14.1 21.7,14.5 22,14.8 22.37,15.3 22.85,15.9 23.45,16.9 23.95,17.4 24.05,17.5 24.5,18 25,18.6 25.5,19.3 25.8,19.8 26,20.2 26.1,20.5 26.1,21 26,21.3 25.5,22.2 25.05,22.9 24.5,23.7 24,24.3 23.5,24.8 23.2,25.05 21.75,24.7 22.4,23.9 23,23 23.35,22.5 23.55,22.1 23.72,21.8 24.1,21 24.2,20.7 24,20.4 23.75,20 23.5,19.8 23.1,19.3 22.6,18.7 22.3,18.4 22.1,18.2")
-										g(title="Abdomen completo" data-size="M" data-gender="female")
-											polygon(points="13,22.6 15,21.7 16,21.3 16.4,21.1 16.5,21.1 17,21.3 17.9,21.7 18.5,22 19.4,22.4 19.4,22.9 19.7,23.4 19.9,23.6 20.3,24 20.9,26.8 20.2,27.1 19,27.3 18,27.4 17,27.5 16,27.55 15,27.5 14,27.49 13,27.4 12.1,27.3")
-										g(title="Rostro completo" data-size="M" data-gender="female")
-											polygon(points="14.7,12 14.5,11 14.4,10.5 14.4,10 14.4,9.5 14.5,9.4 14.7,9.1 14.8,8.85 15,8.7 16,8.6 17,8.6 17.3,8.7 17.6,8.8 17.9,9 18,9.1 18.1,10 18,11 17.7,12 17.5,12.5 16.7,13.4 16.4,13.5 16.2,13.5 16,13.5 15.6,13.3 15.3,13")
-										g(title="Tórax" data-size="M" data-gender="female")
-											polygon(points="12.4,13.55 12.6,14.8 12.65,15 12.7,15.5 12.8,16.2 12.9,16.5 12.8,17.6 12.8,17.75 12.65,18.1 12.45,18.45 12.5,19 12.6,19.5 12.7,20 12.8,21 12.9,22 13,22.5 16.5,21 19.4,22.3 19.4,22 19.6,20 19.7,19 20.1,17.5 20.2,17.3 20.1,17.1 20,16 19.8,15 19.6,14 19.4,13.65 19,13.5 18.5,13.35 18.35,13.4 18.2,13.6 18.1,13.7 17.8,13.85 17.5,13.95 17.2,14.1 16.5,14.3 16,14.35 15.5,14.2 15,14.1 14.5,13.9 14,13.7 13.5,13.3")
-										// S
-										g(title="Axilas" data-size="S" data-gender="female")
-											polygon(points="12.35,13.77 11.7,15 11.5,15.4 11.2,15.9 10.9,16.5 10.8,16.9 10.8,17.1 11.2,16.8 11.6,16.7 11.75,16.75 12.05,17 12.28,17.7 12.4,18.3 12.6,18 12.7,17.6 12.8,16.3")
-											polygon(points="19.65,14 20.5,15.5 21.8,17.9 21,17 20.5,16.95 20.2,17.2 20.1,16.5 20.1,16.2")
-										g(title="Cuello interior" data-size="S" data-gender="female")
-											polygon(points="13.6,13.2 14.2,13 14.5,12.8 14.8,12.4 15.4,13.2 15.8,13.5 16.2,13.6 16.6,13.5 17,13.2 17.5,12.6 17.8,12.9 18.4,13.3 17.9,13.7 17.5,13.9 17,14.1 16.5,14.2 16.2,14.3 15.7,14.2 15,14.05")
-										g(title="Mamas" data-size="S" data-gender="female")
-											circle(cx="14.4" cy="17.3" r="1.7")
-											circle(cx="18.2" cy="17.3" r="1.7")
-										g(title="Frente" data-size="S" data-gender="female")
-											polygon(points="14.8,9 15.5,8.7 17.5,8.7 18,9 17.9,10.2 16,10.5 14.8,9.8")
-										// XS
-										g(title="Manos + dedos" data-size="XS" data-gender="female")
-											polygon(points="9.7,24.4 10,24.9 10.3,25.3 10.8,25.8 11.3,26.1 12.1,26.4 12.4,26.75 12.7,26.8 13,26.9 13.5,26.85 13.8,26.8 14,26.7 14.3,26.45 14.5,26.36 14.7,25.2 14.2,24.87 13.6,24.65 13.3,24.55 13,24.4 12.5,24.21 12,24.25 11.5,24.1 11,23.8 10.5,23.45 10,22.95")
-											polygon(points="23.2,25.1 22.7,25.65 22.4,26 22.2,26.15 21.9,26.25 21.5,26.2 21,26.3 20.5,26.5 20,26.7 19.6,26.95 19.5,26.9 19.2,26.9 18.7,26.7 18.2,26.2 18,26 18.25,24.5 18.6,24.4 18.9,24.25 19.4,24.15 19.7,24.1 20,24.05 20.3,24.09 20.7,24.3 21.5,24.7")
-										g(title="Pies + dedos" data-size="XS" data-gender="female")
-											polygon(points="14.25,50 15.9,50 16.2,51 16.3,51.5 16.2,51.4 16.2,51.8 16.1,52 15.7,53.5 15.5,53.5 15,53.5 14.45,53.4")
-											polygon(points="16.7,50 18.3,50 18.35,50.3 18.3,50.5 18.1,50.7 18.1,53 18.27,53.5 18.3,54.05 18,54.15 18.1,54.15 17.5,54.2 17,54.2 16.5,54.2 15.55,54.25 15.4,54")
-										g(title="Nariz" data-size="XS" data-gender="female")
-											polygon(points="16,11 15.6,11.8 15.6,12 16.05,12.25 16.3,12.23 16.7,12 16.7,11.8 16.3,11")
-										g(title="Areola de pezón" data-size="XS" data-gender="female")
-											circle(cx="14.4" cy="17.3" r="0.7")
-											circle(cx="18.5" cy="17.3" r="0.7")
-										g(title="Orejas" data-size="XS" data-gender="female")
-											polygon(points="13.95,9.8 14.05,10.35 14.3,10.8 14.45,10.82 14.45,10.3 14.1,9.8")
-											polygon(points="18,10.5 18.55,10 18.45,10.6 18.3,10.8 18,11")
-										g(title="Mentón" data-size="XS" data-gender="female")
-											polygon(points="15.7,12.75 16,12.9 16.3,12.9 16.6,12.75 16.6,13.25 16.3,13.45 16,13.45 15.7,13.35")
-										g(title="Pómulos" data-size="XS" data-gender="female")
-											circle(cx="15" cy="11.6" r="0.4")
-											circle(cx="17.25" cy="11.6" r="0.4")
-										g(title="Bozo" data-size="XS" data-gender="female")
-											polygon(points="15.6,12 16,12.2 16.4,12.2 16.7,11.95 16.7,12.4 16.4,12.45 16,12.45 15.65,12.4")
-										g(title="Entrecejo" data-size="XS" data-gender="female")
-											polygon(points="15.8,10.5 15.9,10.75 15.8,11 16,11 16.7,11 16.5,10.75 16.7,10.5")
-										g(title="Intermamario" data-size="XS" data-gender="female")
-											polygon(points="15.95,16.5 16,16.7 16.1,17 16.3,17.8 16.65,17.8 16.65,17 16.8,16.5")
+
 								div(class="tab-pane fade" id="femaleBodyBack" role="tabpanel" aria-labelledby="femalePillsBack")
-									svg(class="svg-body" viewBox="0 0 30 60")
+									svg(class="svg-body" viewBox="0 0 30 60" id="svgBackM")
 										image(href="/public/femalebody_back.jpg" x="0" y="5" height="50")
-										// L
-										g(title="Espalda completa" data-size="L" data-gender="female")
-											polygon(points="11.2,13.5 11,14 10.8,15 10.7,17.5 10.9,18 11.5,19 12,20 12.4,21 12.7,22 12.8,23 12.85,23.3 12.3,24.5 12,25 11.8,26 11.8,26.5 12.5,26.2 14,26.2 17,26.2 18,26.3 19,26.6 19.3,26.7 19.3,26 19.4,25.7 19.6,25.4 19.8,25 19.5,24 19.1,23 18.9,21 18.7,19 18.7,17 18.6,15 18.5,13.5 18,13.35 17,13.1 16.7,13 16,12.9 15,12.7 14,12.4")
-										// M
-										g(title="Medio brazo + hombros" data-size="M" data-gender="female")
-											polygon(points="11,13.5 10.3,14 10,14.3 9.4,15.2 9,15.7 8.5,16.3 8,16.7 7.5,17.2 6.5,18.3 6,19 5.7,19.5 5.5,19.8 5.4,20 5.2,20.4 7.76,20.4 7.8,20.1 8.6,19.2 9.05,18.8 9.55,18.3 10,17.7 10.4,17.3 10.55,17.1")
-											polygon(points="18.6,13.45 18.65,14 18.7,16 18.75,17.2 19.2,16.6 19.3,16.7 20.05,17.5 20.9,18.5 21.9,19.8 22.3,20.4 24.3,20.4 23.6,18.9 23,18.1 22.5,17.4 22.2,17.1 22.08,16.95 22,16.8 21.5,16 21.1,15.1 20.5,14.4 20,14 19.5,13.5 19,13.4")
-										g(title="Muslos" data-size="M" data-gender="female")
-											polygon(points="10.9,30.1 12,30.6 13,31.05 14,31.1 15.5,31.15 17,31.15 18.1,30.3 18.5,29.8 19,29.2 19.4,29 19.5,28.6 19.7,29.5 20.1,30.5 20.05,31.2 19.6,33 19.2,35 18.5,37 18.15,39 13.3,39 13.1,38 12.9,37 12.6,36 12,34 11.3,32 11,31")
-										g(title="Glúteos" data-size="M" data-gender="female")
-											polygon(points="11.4,27.8 11.45,27 12,26.5 13,26.1 13.5,26.2 17,26.25 18,26.35 19.15,26.7 19.1,28.5 18.9,29.2 18.2,30 17.4,30.8 16,31.05 13,31 11,30")
-										g(title="Medias piernas" data-size="M" data-gender="female")
-											polygon(points="13.32,39.1 18.1,39.1 18.04,39.5 17.92,40 17.88,40.5 17.9,41 17.94,42 17.8,43 17.7,44 17.3,46 16.9,48 16.8,48.3 17.1,49 17.4,50 17.85,51 18,51.5 18.3,52 18.8,52.5 18.86,52.7 18.8,53 16.3,53.2 16.85,53.8 16.8,54 16.5,54.2 16,54.2 14.5,54.2 14.1,54 14.25,53 14.5,52.5 14.6,52.3 14.3,51.5 14.4,51 15,50 15.1,48 15,47 14.6,46 14.3,45 13.9,44 13.7,43 13.5,41 13.52,40 13.35,39.1")
-										// S
-										g(title="Antebrazo" data-size="S" data-gender="female")
-											polygon(points="5.2,20.45 7.75,20.45 8,21 8.7,22 9.52,23 10.5,24 11.2,24.5 9.8,24.5 9,24 8.75,23.9 7,22.5 6.5,22 6,21.6 5.35,21")
-											polygon(points="22.3,20.5 24.25,20.5 24.2,21 23.9,21.5 23.32,22.5 23.05,23 22.45,23.8 22,24.2 21.1,25.3 20.5,26.2 20.1,25 20.4,24.5 21,23.5 22,21.7 22.3,21")
-										g(title="Cuello posterior" data-size="S" data-gender="female")
-											polygon(points="14.2,11 14.5,11.5 16.5,12.5 16.5,13 14.5,12.5 13.5,12")
+
 						div(class="human-body" id="maleBody" style="display:none;")
 							nav(class="nav nav-pills nav-fill")
 								a(class="nav-item nav-link active" id="malePillsFront" data-toggle="tab" href="#maleBodyFront" role="tab" aria-controls="femaleBodyFront" aria-selected="true") Frente
 								a(class="nav-item nav-link" id="malePillsBack" data-toggle="tab" href="#maleBodyBack" role="tab" aria-controls="maleBodyBack" aria-selected="false") Espalda
 							div(class="tab-content" id="maleTabContent")
 								div(class="tab-pane fade show active" id="maleBodyFront" role="tabpanel" aria-labelledby="malePillsFront")
-									svg(class="svg-body" viewBox="0 0 30 60")
+									svg(class="svg-body" viewBox="0 0 30 60" id="svgFrontH")
 										image(href="/public/malebody_front.jpg" x="0" y="5" height="50")
-										// L
-										g(title="Piernas completas (Hombre)" data-size="L" data-gender="male")
-											polygon(points="11.65,28.7 11.4,30 11.4,31.3 11.55,31.5 11.7,31.7 11.85,32 11.81,32.4 11.7,32.45 11.5,32.7 11.5,33.1 11.5,33.4 11.5,33.7 11.55,34 11.6,34.3 11.65,35 11.7,35.5 11.8,36 11.95,37 12.05,38 12.1,38.5 12.05,39 11.98,39.5 11.7,41 11.55,42 11.55,42.5 11.55,43 11.65,44 11.75,45 12,46 12.1,47 12.3,48 12.33,48.45 13.85,48.5 13.7,48 13.75,46 13.9,45 14.3,43 14,44 14.27,43 14.2,42 14.1,41 14,40.5 14.65,39 14.75,38 14.8,37.5 14.85,37 14.88,36 15,35 15.54,33 15.65,32 15.7,31.5 15,31 14,29.9 13,29.3")
-											polygon(points="15.85,31.6 16.7,31 17,30.5 17.5,30.2 17.8,30 18.4,29.6 18.9,29.3 19.4,29 19.9,28.7 20,29.4 20.05,30 20.2,32 20.25,34 20.2,36 20.2,35.5 20.1,37 20,38 20,39 20.2,40 20.35,40.5 20.4,40.75 20.5,41.5 20.5,42.5 20.4,44 20,47 19.8,48 19.7,48.5 18.2,48.5 18.4,48 18.3,47 18.2,46 18,44 17.9,43.5 17.85,43 17.9,42 18,41 17.9,40.5 17.9,40 17.45,39 17.3,38 17.2,37 17.1,36 17,35.5 16.9,35 16.5,34")
-										// M
-										g(title="Brazos completos" data-size="M" data-gender="male")
-											polygon(points="11.55,14.8 11,15 10.6,15.4 10.4,15.6 10.2,15.9 10,16.5 9.8,17 9.7,18 9.7,18.5 9.5,19.5 9.45,20 9.4,21 9.35,22 9.3,23 9.15,23.5 9.2,24 9.2,24.4 9.1,25 9.03,26 9,27 9.1,28 9.1,29 10.25,29 10.35,28.5 10.45,28 10.65,27 10.85,26 10.95,25.5 11.1,24 11.2,23 11.4,22.5")
-											polygon(points="19.75,14.45 20,14.5 21,15.05 21.35,15.5 21.5,15.8 21.55,16 21.7,16.45 21.85,16.8 21.9,17.2 21.87,18 21.9,18.5 22,19 22.22,20 22.35,22 22.3,22.3 22.5,23 22.6,24 22.7,25 22.8,26 22.8,27 22.65,28 22.7,29 22.8,29.5 22,29.15 21.55,29 21.3,28 21.2,27 21,26 20.8,25.5 20.8,24.5 20.7,23.5 20.5,22 20.5,20 20.3,18 19.7,14.5")
-										g(title="Tórax" data-size="M" data-gender="male")
-											polygon(points="11.65,14.7 13,14.2 13.5,13.9 13.6,14.1 13.9,14.5 14.4,14.9 15.5,15.15 16,15.2 16.5,15.15 17,15.1 17.4,15 17.7,14.9 18,14.8 18.2,14.6 18.6,14.3 18.8,14.1 19.4,14.4 19.5,14.5 19.5,16 19.6,18 19.7,20.5 19.6,21 19.55,22 19.4,23 16.1,21 12.4,23 12.3,22 12.15,21 12.2,20 12.25,19 12.4,18 12.4,17.8")
-										g(title="Rostro completo" data-size="M" data-gender="male")
-											polygon(points="14.3,8.8 15,8.65 16,8.6 17,8.75 17.4,9.1 17.5,10 17.55,11.3 17.4,12.1 17.3,12.3 16.95,12.8 16.7,13.1 16.4,13.35 16,13.4 15.5,13.4 15,13 14.5,12.4 14.3,12 14.1,11.5 14.1,10 14.15,9.5")
-										g(title="Abdomen completo" data-size="M" data-gender="male")
-											polygon(points="12.4,23.1 12.5,23.25 12.3,24.5 12.2,26 12,27 11.9,27.2 12,27.5 12.5,27.6 14,27.8 16,27.9 17,27.9 18,27.8 19,27.7 19.7,27.4 19.65,26.9 19.6,26.7 19.35,25.8 19.4,25.4 19.42,25 19.3,24.4 19.3,23.4 19.4,23 16.1,21.2")
-										g(title="Barba" data-size="M" data-gender="male")
-											polygon(points="14.05,11.1 15.65,12.7 16.45,12.7 17.6,11.1 17.4,12 17.15,12.6 16.45,13.35 15.45,13.35 14.45,12.4")
-										// S
-										g(title="Axilas" data-size="S" data-gender="male")
-											polygon(points="11.65,15 11.5,19 11.5,22 11.6,21.5 11.7,21 11.8,20.5 12.1,21.2 12.15,19.2 12.3,18.2 12.3,18 12,16.5")
-											polygon(points="19.55,14.45 19.75,20.6 19.9,20.2 20.2,21 20.45,22.3 20.45,20.5 20.3,18.5 20.1,17.2 19.9,16 19.65,14.5")
-										g(title="Cuello interior" data-size="S" data-gender="male")
-											polygon(points="14.35,12.5 14.35,13.4 13.7,13.9 14,14.4 14.3,14.7 15,15 16,15.1 17,15 18,14.7 18.5,14.2 18.6,14.1 18.3,14 18,13.8 17.7,13.7 17.5,13.6 17.3,13.5 17.25,13 17.25,12.7 17.3,12.6 16.5,13.4 16,13.6 15.5,13.5 15,13.2")
-										g(title="Frente" data-size="S" data-gender="male")
-											polygon(points="14.25,8.9 15,8.6 15.5,8.6 16,8.6 17,8.7 17.3,9 17.5,10 16,9.8 14.1,10")
-										// XS
-										g(title="Manos + dedos" data-size="XS" data-gender="male")
-											polygon(points="9.08,29 9,30 9.1,31 9.2,32 9.25,32.5 9.3,32 9.3,32.4 9.9,33 10.4,33.4 11,33.2 11.8,32.2 11.8,32 11,30.8 10.7,30.4 10.4,30.2 10.2,29.9 10.18,29.7 10.22,29")
-											polygon(points="22.7,29.6 22.7,30.2 22.8,31 22.85,31.5 22.7,32.2 22.1,32.9 21.9,32.95 21.5,33 21,33.1 20.6,32.9 20.7,32.8 20.9,32.6 20.8,32.55 20.7,32.55 20.5,32.4 20.65,32 20.75,31 20.75,30.8 20.8,30.5 21,30.2 21.2,29.9 21.4,29.7 21.5,29.6 21.55,29.05 21.75,29.1 22.75,29.55")
-										g(title="Pies + dedos" data-size="XS" data-gender="male")
-											polygon(points="12.3,48.5 13.9,48.5 13.8,49 13.95,50.1 13.6,50.4 13.3,50.7 13.1,51.5 13,51.8 12.5,51.85 12,52 11.3,51.8 11.1,51.7 10.8,51.5 10.8,51 11.5,50.3 11.7,50.2 12.1,49.3 12.3,49")
-											polygon(points="18.3,48.5 19.65,48.5 19.72,49 19.85,49.5 20,50.3 20.6,51 20.7,51.4 20.7,51.5 20.6,51.7 20.5,51.7 20,52 19.5,52.1 19,52.1 18.4,51.9 18.3,51.7 18.1,51 17.8,50 17.8,49.8 18.3,49")
-										g(title="Nariz" data-size="XS" data-gender="male")
-											polygon(points="15.75,10.5 15.95,10.5 16.4,11.3 16.4,11.5 15.9,11.6 15.4,11.5 15.4,11.3")
-										g(title="Pómulos" data-size="XS" data-gender="male")
-											circle(cx="14.8" cy="11.2" r="0.4")
-											circle(cx="16.9" cy="11.2" r="0.4")
-										g(title="Bigotes" data-size="XS" data-gender="male")
-											polygon(points=points="15.3,11.7 16,11.6 16.4,11.7 16.8,12 15.9,11.9 15,12")
-										g(title="Patillas" data-size="XS" data-gender="male")
-											polygon(points="14.05,11 14.5,11.5 14.5,12.7")
-											polygon(points="17.5,11 17.2,11.5 17.2,12.4 17.5,12")
-										g(title="Mentón" data-size="XS" data-gender="male")
-											polygon(points="15.4,12.4 15.7,12.6 16.3,12.6 16.5,12.4 16.5,13.2 16.3,13.3 15.6,13.3 15.4,13.2")
-										g(title="Orejas" data-size="XS" data-gender="male")
-											polygon(points="13.65,10.2 13.8,11.5 14.2,11.5 14,10.5")
-											polygon(points="17.5,10.2 18,10.2 17.8,11.2 17.6,11.5")
-										g(title="Entrecejo" data-size="XS" data-gender="male")
-											polygon(points="15.4,10 16.2,10 16.1,10.25 16.2,10.5 15.4,10.5 15.5,10.25 15.4,10")
+
 								div(class="tab-pane fade" id="maleBodyBack" role="tabpanel" aria-labelledby="malePillsBack")
-									svg(class="svg-body" viewBox="0 0 30 60")
+									svg(class="svg-body" viewBox="0 0 30 60" id="svgBackH")
 										image(href="/public/malebody_back.jpg" x="0" y="5" height="50")
-										// L
-										g(title="Espalda completa" data-size="L" data-gender="male")
-											polygon(points="11.4,14.6 11.1,16.5 11.3,18 11.53,18.5 11.63,18.75 11.71,19 11.93,20 12.1,21 12.3,22 12.55,23 12.75,24 12.7,26 12.5,27.3 12.75,27.2 13,27 18,26.8 19,26.9 20.2,27.1 20,26.5 19.8,25.8 19.65,25.35 19.75,25 19.65,24.8 19.62,24.6 19.42,24 19.4,23 19.58,22 19.85,21 20.08,20 20.25,19 20.5,18.5 20.6,18 20.8,17.5 20.8,14.8 20.5,14.65 20.3,14.52 19.5,14.35 19,14.2 18.5,14.05 18,13.78 17.5,13.55 14.3,13.55 14.15,13.6 14,13.7 13.5,14 13.2,14.1 13,14.2 12.7,14.3 12,14.45 11.8,14.5")
-										// M
-										g(title="Medio brazos + hombros" data-size="M" data-gender="male")
-											polygon(points="11.25,14.7 10.55,15.2 10.1,16 9.8,17 9.7,18 9.8,18.5 9.7,19 9.5,20 9.45,21 9.4,24 11.25,24 11.26,23.75 11.25,23.8 11.27,23.5 11.26,23 11.55,22 11.7,20.9 11.8,20.8 11.7,20 11,17.5 10.9,16.7")
-											polygon(points="20.85,14.8 21.2,15.1 21.5,15.45 21.7,15.8 21.95,16.5 22.05,17 22.1,17.5 22.35,19 22.6,21 22.63,22.3 22.8,23 20.9,23 20.8,22.5 20.6,22 20.4,21 20.3,20.5 20.25,20.2 20.18,20.15 20.75,18 20.9,17.5")
-										g(title="Muslos" data-size="M" data-gender="male")
-											polygon(points="12.3,29.5 11.9,32 11.8,33 11.75,35 11.9,37 12,38 11.9,39 14.5,39 14.7,38 14.8,37 15,36 15.3,35 15.7,34 15.95,33 16.14,32 14.5,31.8 14.1,31.7 13.7,31.5 13,30.9")
-											polygon(points="16.6,31.95 17.5,31.8 18.2,31.6 18.5,31.5 19,31.3 19.4,31 19.8,30.6 19.9,30.5 20.1,30.2 20.3,29.9 20.5,29.5 20.6,29.25 20.7,29.5 20.8,30 20.9,31 20.9,31.5 20.9,33 20.7,35 20.55,36 20.4,37 20.45,39 17.7,39 17.6,38 17.5,36.9 17.5,36.3 17.45,36.1 17.4,35.9 17.25,35 17.1,34.5 16.75,33")
-										g(title="Glúteos" data-size="M" data-gender="male")
-											polygon(points="12.4,27.3 14,27 15,26.9 17,26.9 19,27 20.2,27.2 20.6,29 20.5,29.2 20.3,29.7 19.8,30.5 19.2,31 18.5,31.4 17,31.7 15,31.8 14,31.5 13.5,31 13,30.5 12.7,30 12.4,29.7")
-										g(title="Medias piernas" data-size="M" data-gender="male")
-											polygon(points="11.9,39.1 14.55,39.1 14.35,40 14.1,40.5 13.85,41 13.8,42 13.9,43 14,44 13.9,45 13.65,46 13.55,47 13.45,48 13.35,49 13.5,50 13.8,51 13.85,51.7 13.65,51.9 13,52 12.5,51.9 12,51.5 11.5,51 11.1,50.5 11.1,50 12,49.7 12,49 11.7,48 11.5,47 11.3,45 11.2,44 11.2,43 11.65,40.5 11.8,40")
-											polygon(points="17.75,39.1 20.45,39.1 20.6,40.1 20.9,41.5 21.15,43 21.12,44 21,45 20.9,46 20.8,47 20.6,48 20.4,49 20.5,49.7 21.75,50.1 21.7,50.7 21.2,51.15 21,51.3 20.5,51.7 20,52.05 18.8,52 18.8,51 19,50.5 18.8,49.5 19,48.9 18.95,48 18.9,47.5 18.5,45 18.3,43.5 18.45,42 18.45,41.2 17.78,39.2")
-										// S
-										g(title="Antebrazos" data-size="S" data-gender="male")
-											polygon(points="9.4,24.1 11.22,24.1 11.25,25.2 11,27 10.9,28 10.85,28.5 9.75,28.5 9.75,28 9.65,27.5 9.5,27 9.45,26.5 9.35,26")
-											polygon(points="20.9,23.1 22.85,23.1 22.9,23.5 22.95,24 23.05,25 23.1,26 23.15,26.5 23,27 23,28.5 21.9,28.5 21.7,28 21.6,27 21.2,26")
-										g(title="Cuello posterior" data-size="S" data-gender="male")
-											polygon(points="14.5,12.5 15,12.4 16,12.3 17.35,12.4 17.32,13 17.35,13.2 17.55,13.5 14.3,13.5")
+
 						div(class="selected-zones" id="selectedZones" style="display:none;")
 							h5 Zonas seleccionadas #[span(id="selectedZonesCount" class="badge badge-primary") ]
 							p(id="noSelectedZones") Aquí se van a mostrar las zonas seleccionadas
@@ -233,6 +99,11 @@ block contenido
 
 				script.
 					$(document).ready(function(){
+						let services = _.where(!{JSON.stringify(services)});
+						services.forEach(function(element){
+							$("#svg"+element.side+element.gender)[0].innerHTML += '<g title='+ element.name +' data-size='+ element.category +' data-gender="male" data-id='+ element._id +'>'+ element.shapes.toString() +'</g>';
+						});											
+												
 						/*
 						   Paso 1: Selección de servicios
 						   ------------------------------
@@ -241,8 +112,8 @@ block contenido
 						let form = {
 							user: $("#usr"),
 							pack: {
-								container: $("#svcContainer"),
-								selectElement: $("#svc")
+								container: $("#packContainer"),
+								selectElement: $("#pack")
 							}
 						}
 
@@ -293,7 +164,6 @@ block contenido
 
 							/* El administrador puede cambiar el usuario */
 							form.user.on("change", function(event){
-								setDefaultState();
 
 								userObj = _.where(!{JSON.stringify(users)}, {_id: this.value})[0];
 
@@ -589,12 +459,14 @@ block contenido
 							let zoneName = $(shape).attr("title");
 							let gender = $(shape).attr("data-gender");
 							let size = $(shape).attr("data-size");
+							let id = $(shape).attr("data-id");
 
 							let index = getAvailableIndexTrackForSize(size, packTrack);
 
 							packTrack[index].zoneName = zoneName;
 							packTrack[index].gender = gender;
 							packTrack[index].size = size;
+							packTrack[index].id = id;
 
 							packTrack[index].alert = createPackedAlert(shape, zoneName);
 							packTrack[index].shape = $(shape);
@@ -625,6 +497,7 @@ block contenido
 							let zoneName = $(shape).attr("title");
 							let gender = $(shape).attr("data-gender");
 							let size = $(shape).attr("data-size");
+							let id = $(shape).attr("data-id");
 
 							let alertContainer = document.createElement("div");
 							$(alertContainer).addClass("alert-container");
@@ -634,6 +507,7 @@ block contenido
 							trackObj.zoneName = zoneName;
 							trackObj.gender = gender;
 							trackObj.size = size;
+							trackObj.id = id;
 							trackObj.container = $(alertContainer);
 							trackObj.alert = $(alert);
 							trackObj.shape = $(shape);
@@ -1023,18 +897,27 @@ block contenido
 							}
 						];
 
-						$("#svc").change(function(e){
-							if (e.originalEvent) {}
+						$("#usr").change(function(e){
+							if (e.originalEvent) {
+								setDefaultState();
+							}
 							else {
-								console.log(this.options);
-								console.log(!{JSON.stringify(services)});
-								var selOpt = _.where(this.options, {selected: true}).map(a => a.value);
-								/*
+
+							}
+						});
+
+						$("#pack").change(function(e){
+							if (e.originalEvent) {
+							}
+							else {
+								let selectedTreatment = packTrack.filter(pt => pt.id != undefined).concat(nonPackTrack).map(a => a.id);
+								
 								duration = _.filter(!{JSON.stringify(services)}, function(elem){
-									return (selOpt).includes(elem._id);
+									return (selectedTreatment).includes(elem._id);
 								}).map(b => b.duration).reduce((c, d) => (c + d));
 								sessLenght = moment.duration(duration, "minutes");
-								*/
+								$("#svc").value = selectedTreatment;
+
 								$('#calendar').fullCalendar('option', {
 									snapDuration: sessLenght
 								});
