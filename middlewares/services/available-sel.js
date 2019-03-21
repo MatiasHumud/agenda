@@ -3,7 +3,6 @@ module.exports = function(req, res, next){
 		case "Admin":
 			res.locals.tipos = ["XS", "S", "M", "L"];
 			res.locals.genders = ["H", "M"];
-			res.locals.positions = ["Frente", "Espalda"]
 			next();
 			break;
 		default:

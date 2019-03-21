@@ -32,13 +32,6 @@ block contenido
 			div(class="form-group")
 				label(class="font-weight-bold mr-3") Duración:
 				label #{service.duration} minutos
-			div(class="form-group")
-				label(class="font-weight-bold mr-3") Posición de la zona del cuerpo:
-				label
-					-if(service.position == null)
-						| No determinado
-					-else
-						| #{service.position}
 			//div(class="form-group")
 			//	label(class="font-weight-bold mr-3") Forma HTML:
 			//	label
