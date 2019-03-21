@@ -14,11 +14,13 @@ var serviceSchema = new Schema({
 		type: String, required: "Gender is blank",
 		enum: {values: ["H", "M"], message: "Incorrect category"}
 	},
-	position: {
-		type: String, required: "Position is blank",
-		enum: {values: ["Frente", "Espalda"], message: "Incorrect Category"}
+
+	side:{
+		type: String, required: "Side is blank",
+		enum: {values: ["Front", "Back"], message: "Incorrect side"}
 	},
-	shapes:{type: Object},
+	shapes:[{type: String}],
+
 	isAllDay:{type: Boolean, default: false}
 });
 
