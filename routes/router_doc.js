@@ -153,7 +153,9 @@ router.route("/")
 async function saveToDB(req, res){
 	var evt = JSON.parse(req.body.dateSelect);
 	var usr = req.body.usr;
-	var svc = await Service.find({_id: req.body.svc}).exec();
+	console.log(req);
+	var svc = await Service.find({_id: {$in: req.body.selectedTreatment.split(",")} }).exec();
+	console.log(svc);
 	var ress = req.body.ress;
 	var brch = req.body.brch;
 	var docs = new Array(Documento);

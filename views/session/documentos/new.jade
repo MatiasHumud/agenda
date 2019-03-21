@@ -84,7 +84,7 @@ block contenido
 						select(class="form-control" name="ress" id="ress")
 					div(id="calendar" class="disabled")
 						input(type="hidden" id="dateSelect" name="dateSelect" value="")
-
+						input(type="hidden" id="selectedTreatment" name="selectedTreatment" value="")
 				div(class="form-group btn-group float-right top-space" role="group")
 					button(type="button" class="btn btn-outline-danger btn-lg" id="prevBtn" onclick="nextPrev(-1)" data-toggle="tooltip" data-placement="top" title="Atrás")
 						i(class="fa fa-caret-square-o-left")
@@ -916,8 +916,8 @@ block contenido
 									return (selectedTreatment).includes(elem._id);
 								}).map(b => b.duration).reduce((c, d) => (c + d));
 								sessLenght = moment.duration(duration, "minutes");
-								$("#svc").value = selectedTreatment;
-
+								document.getElementById("selectedTreatment").value = selectedTreatment;
+								alert(selectedTreatment);
 								$('#calendar').fullCalendar('option', {
 									snapDuration: sessLenght
 								});
