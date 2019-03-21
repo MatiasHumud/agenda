@@ -22,6 +22,8 @@ block contenido
 						th(class="col text-center")
 							h5 Servicio
 						th(class="col text-center")
+							h5 Posición
+						th(class="col text-center")
 							h5 Género
 						th(class="col text-center")
 							h5 Tipo
@@ -34,6 +36,12 @@ block contenido
 								a(href="/session/servicios/#{service._id}")
 									h5(class="text-info") Servicio: #{service.name}
 								h5(class="text-secondary") Detalle: #{service.brief}
+							td
+								h5(class="text-secondary")
+									-if (service.position == null)
+										| NN
+									-else
+										| #{service.position}
 							td
 								h5(class="text-secondary")
 									-if (service.gender == null)

@@ -47,6 +47,10 @@ block contenido
 								div(class="tab-pane fade" id="femaleBodyBack" role="tabpanel" aria-labelledby="femalePillsBack")
 									svg(class="svg-body" viewBox="0 0 30 60" id="svgBackM")
 										image(href="/public/femalebody_back.jpg" x="0" y="5" height="50")
+<<<<<<< HEAD
+=======
+				polygon(points="14.2,11 14.5,11.5 16.5,12.5 16.5,13 14.5,12.5 13.5,12")
+>>>>>>> fa9d64508cdb25e568dde0e59814faf59c558cdd
 
 						div(class="human-body" id="maleBody" style="display:none;")
 							nav(class="nav nav-pills nav-fill")
@@ -60,7 +64,10 @@ block contenido
 								div(class="tab-pane fade" id="maleBodyBack" role="tabpanel" aria-labelledby="malePillsBack")
 									svg(class="svg-body" viewBox="0 0 30 60" id="svgBackH")
 										image(href="/public/malebody_back.jpg" x="0" y="5" height="50")
+<<<<<<< HEAD
 
+=======
+>>>>>>> fa9d64508cdb25e568dde0e59814faf59c558cdd
 						div(class="selected-zones" id="selectedZones" style="display:none;")
 							h5 Zonas seleccionadas #[span(id="selectedZonesCount" class="badge badge-primary") ]
 							p(id="noSelectedZones") Aquí se van a mostrar las zonas seleccionadas
@@ -156,6 +163,8 @@ block contenido
 						let nonPackTrack = [];
 
 						let filteredPacks = [];
+
+						let confirmedZones;
 
 						let selectedPacks;
 
@@ -473,6 +482,10 @@ block contenido
 
 							updateSelectedZones();
 
+							confirmedZones = packTrack.filter(function(element){
+								return element.shape != null;
+							}).slice(0).concat(nonPackTrack.slice(0));
+
 							$(packTrack[index].alert).appendTo($(packTrack[index].holder));
 						}
 
@@ -516,6 +529,10 @@ block contenido
 							$(alert).appendTo($(alertContainer));
 							$(alertContainer).appendTo(selectionSurface.nonPackedZones.zones);
 
+							confirmedZones = packTrack.filter(function(element){
+								return element.shape != null;
+							}).slice(0).concat(nonPackTrack.slice(0));
+
 							updateSelectedZones();
 
 							if (nonPackTrack.length > 0) {
@@ -529,6 +546,11 @@ block contenido
 							$(nonPackTrack[index].container).remove();
 							nonPackTrack = nonPackTrack.slice(0, index).concat(nonPackTrack.slice(index + 1));
 							$(shape).css({"opacity":"0"});
+
+							confirmedZones = packTrack.filter(function(element){
+								return element.shape != null;
+							}).slice(0).concat(nonPackTrack.slice(0));
+
 							updateSelectedZones();
 						}
 
@@ -883,7 +905,7 @@ block contenido
 						/* En desarrollo */
 
 						var duration = 0;
-						var sessLenght = moment.duration(duration, "minutes");
+						var sessLength = moment.duration(duration, "minutes");
 						var workHours = [
 							{
 								dow: [1, 2 ,3 ,4 ,5],
@@ -910,6 +932,10 @@ block contenido
 							if (e.originalEvent) {
 							}
 							else {
+<<<<<<< HEAD
+=======
+
+>>>>>>> fa9d64508cdb25e568dde0e59814faf59c558cdd
 								let selectedTreatment = packTrack.filter(pt => pt.id != undefined).concat(nonPackTrack).map(a => a.id);
 								
 								duration = _.filter(!{JSON.stringify(services)}, function(elem){
@@ -918,8 +944,12 @@ block contenido
 								sessLenght = moment.duration(duration, "minutes");
 								$("#svc").value = selectedTreatment;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> fa9d64508cdb25e568dde0e59814faf59c558cdd
 								$('#calendar').fullCalendar('option', {
-									snapDuration: sessLenght
+									snapDuration: sessLength
 								});
 							}
 						});
@@ -989,9 +1019,9 @@ block contenido
 							selectHelper: true,
 							selectOverlap: false,
 							selectConstraint: 'businessHours',
-							snapDuration: sessLenght,
+							snapDuration: sessLength,
 							selectAllow: function(selectInfo){
-								if (selectInfo.end.diff(selectInfo.start) !== sessLenght._milliseconds || selectInfo.start < Date.now())
+								if (selectInfo.end.diff(selectInfo.start) !== sessLength._milliseconds || selectInfo.start < Date.now())
 									return false;
 								return true;
 							},

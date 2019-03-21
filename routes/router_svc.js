@@ -16,19 +16,21 @@ router.all("/new", availableServices);
 router.get("/new", function(req, res){
 	res.render("session/servicios/new", {
 		tipos: res.locals.tipos,
-		genders: res.locals.genders
+		genders: res.locals.genders,
+		positions: res.locals.positions
 	});
 });
 
-// Assign "serviceFinder" middleware to every servicios request 
+// Assign "serviceFinder" middleware to every servicios request
 router.all("/:id*", serviceFinder);
-// Assign "availableSelection" middleware to every servicios/edit request 
+// Assign "availableSelection" middleware to every servicios/edit request
 router.all("/:id/edit", availableServices);
 // Despliega el formulario para edición de un servicios específico
 router.get("/:id/edit", function(req, res){
 	res.render("session/servicios/edit", {
 		tipos: res.locals.tipos,
 		genders: res.locals.genders,
+		positions: res.locals.positions,
 		service: res.locals.service
 	});
 });
@@ -43,8 +45,10 @@ router.route("/:id")
 	})
 	.put(function(req, res){//Editar servicio seleccionado
 		res.locals.service.name = req.body.name;
+		res.locals.service.gender = req.body.gender;
 		res.locals.service.category = req.body.category;
 		res.locals.service.brief = req.body.brief;
+		res.locals.service.position = req.body.position;
 		if(req.body.isAllDay == "on"){
 			res.locals.service.isAllDay = true;
 			res.locals.service.duration = 540;
@@ -60,16 +64,15 @@ router.route("/:id")
 				}
 			})(res.locals.service.category);
 		}
-		res.locals.service.gender = req.body.gender;
 
 		res.locals.service.save(function(err){
 			if(!err){
-				res.redirect("/session/servicios/");	
+				res.redirect("/session/servicios/");
 			}
 			else{
 				console.log(err);
 				res.redirect("/session/servicios/"+req.params.id+"/edit");
-			}				
+			}
 		})
 	})
 	.delete(function(req, res){//Borrar documento seleccionado
@@ -87,11 +90,13 @@ router.route("/")
 	.get(function(req, res){//Retorna todos los miembros del usuario
 		res.render("session/servicios/collection", {services: res.locals.services});
 	})
-	.post(function(req, res){//Crea un nuevo servicio	
+	.post(function(req, res){//Crea un nuevo servicio
 		var offeredSvc = new Service({
 			name: req.body.name,
+			gender: req.body.gender,
 			category: req.body.category,
 			brief: req.body.brief,
+			position: req.body.position,
 			isAllDay: (req.body.isAllDay == "on") ? true : false,
 			duration: (function(cat){
 				switch(cat){
@@ -101,7 +106,6 @@ router.route("/")
 					case "L": return 30;
 				}
 			})(req.body.category),
-			gender: req.body.gender
 		});
 
 		offeredSvc.save(function(err){
@@ -115,7 +119,7 @@ router.route("/")
 				res.send(err);
 			}
 		});
-	});	
+	});
 
 /*REST - Servicios de la empresa*/
 

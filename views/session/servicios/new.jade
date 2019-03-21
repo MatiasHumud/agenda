@@ -26,7 +26,7 @@ block contenido
 				div(class="form-group")
 					label(for="gender") Género
 					select(class="form-control" name="gender" id="gender")
-						option(class="secondary" selected) Seleccione un género
+						option(class="text-secondary" selected) Seleccione un género
 						for gender in genders
 							option(class="text-secondary" value=gender)=gender
 				div(class="form-group")
@@ -38,6 +38,12 @@ block contenido
 				div(class="form-group")
 					label(for="brief") Detalle
 					textarea(type="text" name="brief" placeholder="Ingresar reseña con detalle del servicio" id="brief" class="form-control" rows="5")
+				div(class="form-group")
+					label(for="position") Posición de la zona del cuerpo:
+					select(class="form-control" name="position" id="position")
+						option(class="text-secondary" selected) Seleccione una posición
+						for position in positions
+							option(class="text-secondary" value=position)=position
 				//div(class="form-group")
 				//	label(for="shape") Código HTML de la forma
 				//	textarea(id="shape" name="shape" class="form-control" rows="7")
