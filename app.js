@@ -37,6 +37,7 @@ app.use(sessionMiddleware);
 app.set("view engine", "jade");
 
 app.get("/", function(req, res){
+  console.log('prueba');
 	res.render("index", {currentSession: req.session.user_id});
 });
 
@@ -49,16 +50,15 @@ app.get("/login", function(req, res){
 });
 
 app.get("/logout", function(req, res){
-	req.session.destroy(function(err) {
-  		console.log(err);
-	})
+	req.session.destroy();
 	res.redirect("/");
 });
+
 //Creación de usuario común (cliente)
-app.post("/newUser", function(req, res){// Envío de formulario "Registration"
-	
+app.post("/newUser", (req, res) => {
+
 	User.findOne({ email: req.body.email}).then(function(usr){
-		if(usr){// Si existe usuario con ese email
+		if(usr){
 			console.log("El correo "+usr.email+" ya está registrado");
 			res.redirect("/");
 		}
@@ -94,7 +94,7 @@ app.post("/knock", function(req, res){// Envío de formulario "Login"
 		if(usr){// Ingresamos a la sesión del usuario
 			req.session.user_id = usr._id;
 			console.log("Login: "+usr);
-			res.redirect("/session");		
+			res.redirect("/session");
 		}
 		else{
 			console.log("Datos Incorrectos");
@@ -117,4 +117,6 @@ app.use("/session/horarios", router_hours);
 app.use("/session/packTypes", router_packTypes);
 app.use("/session/packs", router_pack);
 
-server.listen(3000);
+server.listen(3000, () => {
+  console.log('Example app listening on port 3000!');
+});

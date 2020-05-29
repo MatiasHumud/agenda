@@ -30,10 +30,4 @@ module.exports = function(server, sessionMiddleware){
 			io.emit("new pack", message);
 		}
 	});
-	/*
-	io.sockets.on("connection", function(socket){
-		console.log("Nueva conexión: ")
-		console.log(socket.request.session.user_id);
-	});
-	*/
 }
