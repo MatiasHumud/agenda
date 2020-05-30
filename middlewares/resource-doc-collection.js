@@ -1,4 +1,4 @@
-var Documento = require("../models/documento").Documento;
+var Documento = require("../models/contract.model").Documento;
 var mongoose = require("mongoose");
 
 module.exports = function(req, res, next){

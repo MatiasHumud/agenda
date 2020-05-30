@@ -1,4 +1,4 @@
-var User = require("../../models/user").User;
+var User = require("../../models/user.model").User;
 var Service = require("../../models/service").Service;
 var Pack = require("../../models/pack").Pack;
 //var isEditable = require("./is-editable");

@@ -1,5 +1,5 @@
 var express = require("express");
-var User = require("../models/user").User;
+var User = require("../models/user.model").User;
 var router = express.Router();
 var redis = require("redis");
 

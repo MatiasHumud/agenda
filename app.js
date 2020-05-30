@@ -1,10 +1,10 @@
 var http = require("http");
 var bodyParser = require("body-parser");
 var express = require("express");
-var User = require("./models/user").User;
-var Resource = require("./models/user").Resource;
-var Branch = require("./models/user").Branch;
-var Admin = require("./models/user").Admin;
+var User = require("./models/user.model").User;
+var Resource = require("./models/user.model").Resource;
+var Branch = require("./models/user.model").Branch;
+var Admin = require("./models/user.model").Admin;
 var session =require("express-session");
 var router_sess = require("./routes/router_sess");
 var router_doc = require("./routes/router_doc");

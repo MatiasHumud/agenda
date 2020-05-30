@@ -1,6 +1,6 @@
 var express = require("express");
 var Pack = require("../models/pack").Pack;
-var User = require("../models/user").User;
+var User = require("../models/user.model").User;
 var router = express.Router();
 var fs = require("fs");
 var packFinder = require("../middlewares/packs/find-document");

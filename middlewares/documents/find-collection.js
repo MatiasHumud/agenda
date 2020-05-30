@@ -1,5 +1,5 @@
-var Documento = require("../../models/documento").Documento;
-var User = require("../../models/user").User;
+var Documento = require("../../models/contract.model").Documento;
+var User = require("../../models/user.model").User;
 var ownerCheck = require("../document-permission");
 
 module.exports = function(req, res, next){

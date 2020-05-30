@@ -1,6 +1,6 @@
 var express = require("express");
 var PackType = require("../models/packType").PackType;
-var User = require("../models/user").User;
+var User = require("../models/user.model").User;
 var router = express.Router();
 //var fs = require("fs");
 var packTypeFinder = require("../middlewares/packTypes/find-document");

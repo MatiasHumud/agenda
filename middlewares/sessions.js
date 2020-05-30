@@ -1,4 +1,4 @@
-var User = require("../models/user").User;
+var User = require("../models/user.model").User;
 
 module.exports = function(req, res, next){
 	if(!req.session.user_id){
