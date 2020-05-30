@@ -1,104 +1,210 @@
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema; 
+const mongoose, { Schema } = require('mongoose');
+const validator = require('validator');
+const uuidV4 = require('uuid/V4');
+const bcrypt = require('bcrypt');
 
-mongoose.connect("mongodb://localhost/UsersDB")
+mongoose.connect('mongodb://localhost/UsersDB')
 
-var email_match = [/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-					"Invalid email"];
-var options = {discriminatorKey: "permission"};
+const genders = new Map([
+  ['M', 'Masculino'],
+  ['F', 'Femenino'],
+  ['O', 'Otro'],
+]);
 
-// define schema
-var userSchema = new Schema({
-	name:{type: String, required: "Name is blank"},
-	lastName:{type: String, required: "Last name is blank"},
-	gender:{
-		type: String, required: "Gender is blank",
-		enum: {values: ["H", "M"], message: "Incorrect category"}
-	},
-	email:{type: String, required: "Email is blank", match: email_match},
-	password:{
-		type: String, 
-		required: "Password is blank", 
-		minlength: [8, "Password must be 8 characters min"],
-		validate:{
-			validator: function(p){
-				return this.pass_confirm == p;
-			},
-			message: "Password does not match"
-		}
-	}
-}, options);
+/**
+ * Caculates the sha256 of the given pan
+ * @param {string} password The user's password
+ */
+const calculatePasswordHash = password => bcrypt.hash(password, 10);
 
-userSchema.virtual("pass_confirm").get(function(){
-	return this.p_c;
-}).set(function(p){
-	this.p_c = p;
-});
+const UserSchema = new Schema(
+  {
+    chileSomosUnoId: {
+      type: String,
+      default: uuidV4,
+      required: true,
+      unique: true,
+    },
+    firstName: {
+      type: String,
+      required: [true, 'firstName is required'],
+    },
+    lastName: {
+      type: String,
+      required: [true, 'lastName is required'],
+    },
+    documentNumber: {
+      type: String,
+      required: [true, 'documentNumber is required'],
+      unique: true,
+    },
+    documentType: {
+      type: String,
+      required: [true, 'documentType is required'],
+      default: 'RUT',
+    },
+    email: {
+      type: String,
+      lowercase: true,
+      required: [true, 'email is required'],
+      validate: {
+        validator: (value) => validator.isEmail(value),
+        message: '{VALUE} is not a valid email',
+      },
+    },
+    mobilePhone: {
+      type: String,
+      required: [true, 'mobilePhone is required'],
+      validate: {
+        validator: (value) => validator.isMobilePhone(value),
+        message: '{VALUE} is not a valid mobilePhone',
+      },
+    },
+    gender: {
+      type: String,
+      required: [true, 'gender is required'],
+      enum: genders.keys(),
+    },
+    birthDate: {
+      type: Date,
+      required: [true, 'birthDate is required'],
+    },
+    nationality: { type: String },
+    address: {
+      city: { type: String },
+      borough: { type: String },
+      streetName: { type: String },
+      streetNumber: { type: String },
+    },
+    password: {
+      type: String,
+      required: [true, 'password is required'],
+      validate:{
+        validator: password => this.passwordConfirmation === password,
+        message: 'Password does not match',
+      }
+    },
+  },
+  {
+    timestamps: true,
+    discriminatorKey: 'userType'
+  },
+);
 
-// Client (Regular) User
-var User = mongoose.model("User", userSchema);
+UserSchema.virtual('passwordConfirmation')
+  .get(() => this.passwordConfirmation)
+  .set(password => this.passwordConfirmation = password);
 
-// Branch User
-var branchSchema = new Schema({
-	address: {type: String, required: "Branch address is blank"},
-	workHours: {
-		type: Array,
-		default: [
-			{
-				dow: [1, 2 ,3 ,4 ,5],
-				start: "08:00",
-				end: "19:00"
-			},
-			{
-				dow: [6],
-				start: "08:00",
-				end: "14:00"
-			}
-		]
-	}
-}, options);
-var Branch = User.discriminator("Branch", branchSchema);
+UserSchema.virtual('passwordConfirmation')
+  .get(() => `${this.firstName} ${this.lastName}`);
 
-// Resource User
-var resourceSchema = new Schema({
-	parentBranch: {type: Schema.Types.ObjectId, ref: "Branch", required: "Branch is blank"},
-	workHours: {
-		type: Array,
-		default: [
-			{
-				dow: [1, 2 ,3 ,4 ,5],
-				start: "08:00",
-				end: "19:00"
-			},
-			{
-				dow: [6],
-				start: "08:00",
-				end: "14:00"
-			}
-		]
-	}
-}, options);
-var Resource = User.discriminator("Resource", resourceSchema);
+const User = mongoose.model('User', UserSchema);
 
-// Admin User
-var adminSchema = new Schema({
-	workHours: {
-		type: Array,
-		default: [
-			{
-				dow: [1, 2 ,3 ,4 ,5, 6, 7],
-				start: "00:00",
-				end: "24:00"
-			}
-		]
-	}
-}, options);
-var Admin = User.discriminator("Admin", adminSchema);
+const contributionRanges = new Map([
+  ['L', {lower: 10000, upper: 30000 }],
+  ['M', {lower: 30001, upper: 60000 }],
+  ['H', {lower: 60001 }],
+]);
 
-// Module Exports
+// Benefactor
+const BenefactorSchema = new UserSchema();
+BenefactorSchema.add(
+  {
+    contributionRange: {
+      type: String,
+      required: [true, 'contributionRange is required'],
+      enum: contributionRanges.keys(),
+    },
+  },
+);
+const Benefactor = User.discriminator('Benefactor', BenefactorSchema);
+
+const maritalStatuses = new Map([
+  ['single', 'Soltero/a'],
+  ['married', 'Casado/a'],
+  ['divorced', 'Divorciado/a'],
+  ['widow', 'Viudo/a'],
+]);
+
+const occupationalStatuses = new Map([
+  ['employed', 'Empleado/a'],
+  ['unemployedLooking', 'Sin empleo en búsqueda de empleo'],
+  ['unemployedNotLooking', 'Sin empleo y sin búsqueda de empleo'],
+]);
+
+const educationalDegrees = new Map([
+  ['basic', 'Enseñanza básica'],
+  ['medium', 'Enseñanza media'],
+  ['technicalMedium', 'Técnico en educación media'],
+  ['technicalHigh', 'Educación técnica nivel superior'],
+  ['universitary', 'Título profesional'],
+  ['other', 'Otro'],
+]);
+
+const householdPersonsRanges = new Map([
+  ['L', 'Entre 1 y 3 personas'],
+  ['M', 'Entre 4 y 6 personas'],
+  ['H', '7 o más personas'],
+]);
+
+const householdIncomeRanges = new Map([
+  ['L', 'Entre $0 y $50.000'],
+  ['M', 'Entre $50.000 y $150.000'],
+  ['H', 'Entre $150.000 y $300.000'],
+  ['XH', 'Más de $300.000'],
+]);
+
+// Beneficiary
+const BeneficiarySchema = new UserSchema();
+BeneficiarySchema.add(
+  {
+    maritalStatus: {
+      type: String,
+      required: [true, 'contributionRange is required'],
+      enum: maritalStatuses.keys(),
+    },
+    occupationalStatus: {
+      type: String,
+      required: [true, 'occupationalStatus is required'],
+      enum: occupationalStatuses.keys(),
+    },
+    educationalDegree: {
+      type: String,
+      required: [true, 'educationalDegree is required'],
+      enum: educationalDegrees.keys(),
+    },
+    householdPersons: {
+      type: String,
+      required: [true, 'householdPersons is required'],
+      enum: householdPersonsRanges.keys(),
+    },
+    householdMinors: {
+      type: Number,
+      required: [true, 'householdMinors is required'],
+    },
+    householdIncome: {
+      type: String,
+      required: [true, 'householdIncome is required'],
+      enum: householdIncomeRanges.keys(),
+    },
+    hasStateSupport: {
+      type: Boolean,
+      required: [true, 'hasStateSupport is required'],
+    },
+    householdSheetLink: {
+      type: String,
+      required: [true, 'householdSheetLink is required'],
+    },
+  },
+);
+var Beneficiary = User.discriminator('Beneficiary', BeneficiarySchema);
+
+// Admin
+const AdminSchema = new UserSchema();
+var Admin = User.discriminator('Admin', AdminSchema);
+
 module.exports = {
-	User: User,
-	Resource: Resource,
-	Branch: Branch,
-	Admin: Admin
+	Benefactor,
+	Beneficiary,
+	Admin,
 };
