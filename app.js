@@ -8,6 +8,7 @@ const methodOverride = require('method-override');
 const RedisStore = require('connect-redis')(session);
 const realtime = require('./realtime');
 const sessionRouter = require('./routes/session/session.router');
+const userRouter = require('./routes/user/user.router');
 const contractRouter = require('./routes/contract/contract.router');
 
 const app = express();
@@ -45,32 +46,6 @@ app.get('/logout', (req, res) => {
 	res.redirect('/');
 });
 
-app.post('/newUser', async (req, res) => {
-  let benefactor;
-
-  benefactor = await Benefactor.findOne({ email: req.body.email });
-
-  if(benefactor) {
-    console.log(`El correo ${benefactor.email} ya está registrado`);
-    res.redirect('/');
-    return;
-  }
-
-  try {
-    benefactor = new Benefactor(req.body);
-
-    await benefactor.save();
-
-    console.log(`Guardamos tus datos: Email ${benefactor.email} / Password ${benefactor.password}`);
-    req.session.userId = benefactor.userId;
-    res.redirect('/session');
-  } catch (error) {
-    console.log({ error });
-    console.log('No pudimos guardar tus datos');
-    res.redirect('/');
-  }
-});
-
 app.post('/knock', async (req, res) => {
   let user;
 
@@ -93,6 +68,7 @@ app.post('/knock', async (req, res) => {
 
 app.use('/session', currentSessionMiddleware);
 app.use('/session', sessionRouter);
+app.use('/user', userRouter);
 app.use('/session/contract', contractRouter);
 
 server.listen(3000, () => { console.log('Example app listening on port 3000!') });
