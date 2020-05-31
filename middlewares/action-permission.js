@@ -17,6 +17,6 @@ module.exports = function(req, res){
 			return false;
 			break;
 		default:
-			return true;	
+			return true;
 	}
 }

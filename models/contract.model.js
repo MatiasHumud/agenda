@@ -1,19 +1,19 @@
-const mongoose, { Schema } = require('mongoose');
+const mongoose = require('mongoose');
 
 // define schema
-var ContractSchema = new Schema(
+var ContractSchema = new mongoose.Schema(
 	{
     title: {
       type: String,
       default: 'default',
     },
     usuario: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Beneficiary',
       required: 'Beneficiary is required',
     },
     recurso: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Benefactor',
       required: 'Benefactor is required',
     },

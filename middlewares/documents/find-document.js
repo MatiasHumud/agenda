@@ -1,8 +1,8 @@
-var Documento = require("../../models/contract.model").Documento;
+var { Contract } = require("../../models/contract.model");
 var ownerCheck = require("../document-permission");
 
 module.exports = function(req, res, next){
-	Documento.findById(req.params.id)
+	Contract.findById(req.params.id)
 		.populate("usuario")
 		.populate("recurso")
 		.populate("sucursal")

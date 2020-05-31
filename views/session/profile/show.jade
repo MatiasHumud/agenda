@@ -1,0 +1,49 @@
+extends ../../layout.jade
+
+block contenido
+	-if (user.permission == "Admin")
+		include ../session_permission/adminActions.jade
+	-else if (user.permission == "Branch")
+		include ../session_permission/benefactorActions.jade
+	-else if (user.permission == "Resource")
+		include ../session_permission/beneficiaryActions.jade
+	-else
+		include ../session_permission/benefactorActions.jade
+
+	main
+		div(class="container mx-auto col-xs-12 col-sm-6 top-space")
+			h1(class="text-center mb-5") Datos #{user.name}
+			-if(user.permission == "Resource")
+				div(class="form-group")
+					label(type="text" class="font-weight-bold mr-3" name="branch" id="branch") Sucursal:
+					label(for="name") #{user.parentBranch.name}
+			div(class="form-group")
+				label(type="text" class="font-weight-bold mr-3" name="name" id="name") Nombre:
+				label(for="name") #{user.name}
+			div(class="form-group")
+				label(type="text" class="font-weight-bold mr-3" name="lastName" id="lastName") Apellido:
+				label(for="lastName") #{user.lastName}
+			-if(user.permission != "Admin" && user.permission != "Branch" && user.permission != "Resource")
+				div(class="form-group")
+					label(type="text" class="font-weight-bold mr-3" name="email" id="gender") Género:
+					-if(user.gender == "M")
+						label(for="gender")	Mujer
+					-else if (user.gender == "H")
+						label(for="gender") Hombre
+			-if(user.permission == "Admin" || user.permission == "Branch" || user.permission == "Resource")
+				div(class="form-group")
+					label(type="text" class="font-weight-bold mr-3" name="permission" id="permission") Rol:
+					label(for="permission") #{user.permission}
+			-if(user.permission == "Branch")
+				div(class="form-group")
+					label(type="text" class="font-weight-bold mr-3" name="addr" id="addr") Dirección:
+					label(for="addr") #{user.address}
+			-if(user.permission == "Resource")
+				div(class="form-group")
+					label(type="text" class="font-weight-bold" name="workHours" id="workHours") Horas Hábiles:
+					label(for="workHours") #{JSON.stringify(user.workHours)}
+			div(class="btn-group")
+				a(href="/session/cuenta/edit" class="btn btn-default btn-outline-primary btn-lg" data-toggle="tooltip" data-placement="top" title="Editar")
+					i(class="fa fa-pencil-square-o")
+				a(href="/session" class="btn btn-default btn-outline-danger btn-lg" data-toggle="tooltip" data-placement="top" title="Volver")
+					i(class="fa fa-caret-square-o-left")

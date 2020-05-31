@@ -1,9 +1,9 @@
-const mongoose, { Schema } = require('mongoose');
+const mongoose = require('mongoose');
 const validator = require('validator');
-const uuidV4 = require('uuid/V4');
+const uuidv4 = require('uuid/v4');
 const bcrypt = require('bcrypt');
 
-mongoose.connect('mongodb://localhost/UsersDB')
+mongoose.connect('mongodb://localhost/users');
 
 const genders = new Map([
   ['M', 'Masculino'],
@@ -17,11 +17,11 @@ const genders = new Map([
  */
 const calculatePasswordHash = password => bcrypt.hash(password, 10);
 
-const UserSchema = new Schema(
+const UserSchema = new mongoose.Schema(
   {
-    chileSomosUnoId: {
+    userId: {
       type: String,
-      default: uuidV4,
+      default: uuidv4,
       required: true,
       unique: true,
     },
@@ -63,7 +63,7 @@ const UserSchema = new Schema(
     gender: {
       type: String,
       required: [true, 'gender is required'],
-      enum: genders.keys(),
+      enum: [...genders.keys()],
     },
     birthDate: {
       type: Date,
@@ -95,8 +95,10 @@ UserSchema.virtual('passwordConfirmation')
   .get(() => this.passwordConfirmation)
   .set(password => this.passwordConfirmation = password);
 
-UserSchema.virtual('passwordConfirmation')
-  .get(() => `${this.firstName} ${this.lastName}`);
+UserSchema.virtual('fullName')
+  .get(function() { return `${this.firstName} ${this.lastName}`; });
+
+UserSchema.index({ userId: 1 });
 
 const User = mongoose.model('User', UserSchema);
 
@@ -106,14 +108,12 @@ const contributionRanges = new Map([
   ['H', {lower: 60001 }],
 ]);
 
-// Benefactor
-const BenefactorSchema = new UserSchema();
-BenefactorSchema.add(
+const BenefactorSchema = new mongoose.Schema(
   {
     contributionRange: {
       type: String,
       required: [true, 'contributionRange is required'],
-      enum: contributionRanges.keys(),
+      enum: [...contributionRanges.keys()],
     },
   },
 );
@@ -155,28 +155,27 @@ const householdIncomeRanges = new Map([
 ]);
 
 // Beneficiary
-const BeneficiarySchema = new UserSchema();
-BeneficiarySchema.add(
+const BeneficiarySchema = new mongoose.Schema(
   {
     maritalStatus: {
       type: String,
       required: [true, 'contributionRange is required'],
-      enum: maritalStatuses.keys(),
+      enum: [...maritalStatuses.keys()],
     },
     occupationalStatus: {
       type: String,
       required: [true, 'occupationalStatus is required'],
-      enum: occupationalStatuses.keys(),
+      enum: [...occupationalStatuses.keys()],
     },
     educationalDegree: {
       type: String,
       required: [true, 'educationalDegree is required'],
-      enum: educationalDegrees.keys(),
+      enum: [...educationalDegrees.keys()],
     },
     householdPersons: {
       type: String,
       required: [true, 'householdPersons is required'],
-      enum: householdPersonsRanges.keys(),
+      enum: [...householdPersonsRanges.keys()],
     },
     householdMinors: {
       type: Number,
@@ -185,7 +184,7 @@ BeneficiarySchema.add(
     householdIncome: {
       type: String,
       required: [true, 'householdIncome is required'],
-      enum: householdIncomeRanges.keys(),
+      enum: [...householdIncomeRanges.keys()],
     },
     hasStateSupport: {
       type: Boolean,
@@ -200,10 +199,11 @@ BeneficiarySchema.add(
 var Beneficiary = User.discriminator('Beneficiary', BeneficiarySchema);
 
 // Admin
-const AdminSchema = new UserSchema();
+const AdminSchema = new mongoose.Schema({});
 var Admin = User.discriminator('Admin', AdminSchema);
 
 module.exports = {
+  User,
 	Benefactor,
 	Beneficiary,
 	Admin,

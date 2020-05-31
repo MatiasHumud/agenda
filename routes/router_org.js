@@ -1,6 +1,5 @@
 var express = require("express");
 var User = require("../models/user.model").User;
-var Resource = require("../models/user.model").Resource;
 var router = express.Router();
 var availablePermissions = require("../middlewares/org/available-sel");
 var memberFinder = require("../middlewares/org/find-document");

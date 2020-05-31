@@ -1,38 +1,60 @@
 extends ./layout.jade
 
 block contenido
-	-if (currentSession != null)
-		include ./session/session_permission/authActions.jade
-	-else
-		include ./session/session_permission/unauthActions.jade
+  -if (currentSession != null)
+    include ./session/session_permission/authActions.jade
+  -else
+    include ./session/session_permission/unauthActions.jade
 
-	div(class="top-space")
+  div(class="top-space")
 
-	main
-		div(class="container mx-auto col-xs-12 col-sm-6 top-space")
-			h1(class="text-center mb-3") Registro
-			form(action="/newUser" method="POST" class="registration")
-				div(class="form-group")
-					label(for="name") Nombre
-					input(type="text" name="name" placeholder="Nombre" id="name" class="form-control")
-				div(class="form-group")
-					label(for="lastName") Apellido
-					input(type="text" name="lastName" placeholder="Apellido" id="lastName" class="form-control")
-				div(class="form-group")
-					label(for="gender") Género
-					select(class="form-control" name="gender" id="gender")
-						option(class="text-secondary" value=undefined selected disabled) Seleccione una opción
-						option(class="text-secondary" value="M") Mujer
-						option(class="text-secondary" value="H") Hombre
-				div(class="form-group")
-					label(for="email") Email
-					input(type="text" name="email" placeholder="Email" id="email" class="form-control")
-				div(class="form-group")
-					label(for="password") Contraseña
-					input(type="password" name="password" placeholder="Contraseña" id="password" class="form-control")
-				div(class="form-group")
-					label(for="password_confirmation") Confirmación de contraseña
-					input(type="password" name="password_confirmation" placeholder="Contraseña" id="password_confirmation" class="form-control")
-				div(class="d-flex justify-content-between align-items-center top-space")
-					input(type="submit" value="Enviar" class="btn btn-default btn-outline-dark")
-					a(href="/login") Ya tengo cuenta
+  main
+    div(class="container mx-auto col-xs-12 col-sm-6 top-space")
+      h1(class="text-center mb-3") Padrino
+      form(action="/newUser" method="POST" class="registration")
+        div(class="form-group")
+          label(for="firstName") Nombre
+          input(type="text" name="firstName" placeholder="Nombre" id="firstName" class="form-control")
+        div(class="form-group")
+          label(for="lastName") Apellido
+          input(type="text" name="lastName" placeholder="Apellido" id="lastName" class="form-control")
+        div(class="form-group")
+          label(for="documentNumber") Rut
+          input(type="text" name="documentNumber" placeholder="Número de documento" id="documentNumber" class="form-control")
+        div(class="form-group")
+          label(for="email") Correo electrónico
+          input(type="text" name="email" placeholder="Email" id="email" class="form-control")
+        div(class="form-group")
+          label(for="mobilePhone") Teléfono
+          input(type="text" name="mobilePhone" placeholder="Número de teléfono" id="mobilePhone" class="form-control")
+        div(class="form-group")
+          label(for="gender") Género
+          select(class="form-control" name="gender" id="gender")
+            option(class="text-secondary" value=undefined selected disabled) Seleccione una opción
+            option(class="text-secondary" value="M") Masculino
+            option(class="text-secondary" value="F") Femenino
+            option(class="text-secondary" value="O") Otro
+        div(class="form-group")
+          label(for="birthDate") Fecha de nacimiento
+          input(type="text" id="dateSelect" name="birthDate" value="" class="form-control")
+        div(class="form-group")
+          label(for="gender") ¿Con cuánto podrías ayudar a tu apadrinado mensualmente?
+          select(class="form-control" name="contributionRange" id="contributionRange")
+            option(class="text-secondary" value=undefined selected disabled) Seleccione una opción
+            option(class="text-secondary" value="L") Entre $10.000 y $30.000 mensual
+            option(class="text-secondary" value="M") Entre $30.001 y $60.000 mensual
+            option(class="text-secondary" value="H") $60.001 o más mensual
+        div(class="form-group")
+          label(for="password") Contraseña
+          input(type="password" name="password" placeholder="Contraseña" id="password" class="form-control")
+        div(class="form-group")
+          label(for="passwordConfirmation") Confirmación de contraseña
+          input(type="password" name="passwordConfirmation" placeholder="Contraseña" id="passwordConfirmation" class="form-control")
+        div(class="d-flex justify-content-between align-items-center top-space")
+          input(type="submit" value="Enviar" class="btn btn-default btn-outline-dark")
+          a(href="/login") Ya tengo cuenta
+
+      script.
+        $(document).ready(function() {
+          $("#dateSelect").datepicker({ dateFormat: 'yyyy-mm-dd' });
+        });

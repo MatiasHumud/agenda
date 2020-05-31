@@ -1,0 +1,159 @@
+extends ../../layout.jade
+
+block contenido
+	-if (user.permission == "Admin")
+		include ../session_permission/adminActions.jade
+	-else if (user.permission == "Branch")
+		include ../session_permission/benefactorActions.jade
+	-else if (user.permission == "Resource")
+		include ../session_permission/beneficiaryActions.jade
+	-else
+		include ../session_permission/benefactorActions.jade
+
+	main
+		div(class="mx-auto col-xs-12 col-sm-6 top-space")
+			h1(class="text-center mb-3") Editar #{user.name}
+			form(action="/session/cuenta?_method=PUT" method="POST" id="accForm" name="accForm")
+				div(class="form-group")
+					label(for="name") Nombre
+					input(type="text" name="name" value="#{user.name}" id="name" class="form-control")
+				div(class="form-group")
+					label(for="lastName") Apellido
+					input(type="text" name="lastName" value="#{user.lastName}" id="lastName" class="form-control")
+				div(class="form-group")
+					label(for="gender") Género
+					select(class="form-control" name="gender" id="gender")
+						option(class="text-secondary" value=undefined selected disabled) Selccione una opción
+						option(class="text-secondary" value="M") Mujer
+						option(class="text-secondary" value="H") Hombre
+				div(class="form-group")
+					label(for="email") Email
+					input(type="text" name="email" value="#{user.email}" id="email" class="form-control")
+				div(class="form-group")
+					label(for="oldPassword") Contraseña actual
+					input(type="password" name="oldPassword" placeholder="Contraseña actual" id="oldPassword" class="form-control")
+				-if(user.permission == "Branch")
+					div(class="form-group")
+						label(for="addr") Dirección
+						input(type="text" name="addr" value="#{user.address}" id="addr" class="form-control")
+				div(class="form-group")
+					label(for="newPassword") Contraseña nueva
+					input(type="password" name="newPassword" placeholder="Contraseña nueva" id="newPassword" class="form-control")
+				div(class="form-group")
+					label(for="password_confirmation") Confirmación contraseña
+					input(type="password" name="password_confirmation" placeholder="Confirmación contraseña nueva" id="password_confirmation" class="form-control")
+				-if(user.permission == "Resource")
+					div("container")
+						input(type="hidden" id="whSelect" name="whSelect")
+						table(class="table table-hover table-bordered table-responsive rounded" id="whTbl")
+							thead(class="thead-light text-center")
+								tr
+									th(class="col text-center") Día
+									th(class="col text-center") Inicio
+									th(class="col text-center") Fin
+							tbody
+								tr
+									td
+										input(type="checkbox" id="chbD")
+										label(for="chbD")
+											h5(class="left-space") D
+									td
+										input(type="time" id="stD")
+									td
+										input(type="time" id="etD")
+								tr
+									td
+										input(type="checkbox" id="chbL")
+										label(for="chbL")
+											h5(class="left-space") L
+									td
+										input(type="time" id="stL")
+									td
+										input(type="time" id="etL")
+								tr
+									td
+										input(type="checkbox" id="chbM")
+										label(for="chbM")
+											h5(class="left-space") M
+									td
+										input(type="time" id="stM")
+									td
+										input(type="time" id="etM")
+								tr
+									td
+										input(type="checkbox" id="chbW")
+										label(for="chbW")
+											h5(class="left-space") W
+									td
+										input(type="time" id="stW")
+									td
+										input(type="time" id="etW")
+								tr
+									td
+										input(type="checkbox" id="chbJ")
+										label(for="chbJ")
+											h5(class="left-space") J
+									td
+										input(type="time" id="stJ")
+									td
+										input(type="time" id="etJ")
+								tr
+									td
+										input(type="checkbox" id="chbV")
+										label(for="chbV")
+											h5(class="left-space") V
+									td
+										input(type="time" id="stV")
+									td
+										input(type="time" id="etV")
+								tr
+									td
+										input(type="checkbox" id="chbS")
+										label(for="chbS")
+											h5(class="left-space") S
+									td
+										input(type="time" id="stS")
+									td
+										input(type="time" id="etS")
+
+				div(class="form-group text-right top-space")
+					button(type="submit" class="btn btn-outline-success btn-lg" data-toggle="tooltip" data-placement="top" title="Enviar")
+						i(class="fa fa-check-square-o")
+
+					script.
+						$(document).ready(function() {
+							var dayNames = ["D","L","M","W","J","V","S"];
+							var IDs = ["chb", "st", "et"];
+							var searchID;
+							var daysOfWeek = !{JSON.stringify(user.workHours)};
+							for (var i = 0; i < daysOfWeek.length; i++){
+								for(var j = 0; j < daysOfWeek[i].dow.length; j++){
+									searchID = IDs[0]+dayNames[daysOfWeek[i].dow[j]];
+									document.getElementById(searchID).checked = true;
+									searchID = IDs[1]+dayNames[daysOfWeek[i].dow[j]];
+									document.getElementById(searchID).value = daysOfWeek[i].start;
+									searchID = IDs[2]+dayNames[daysOfWeek[i].dow[j]];
+									document.getElementById(searchID).value = daysOfWeek[i].end;
+								};
+							};
+
+							$("#accForm").on('submit', function (e) {
+								var newWH;
+								daysOfWeek = [];
+								for(var k = 0; k < dayNames.length; k++){
+									searchID1 = IDs[0]+dayNames[k];
+									searchID2 = IDs[1]+dayNames[k];
+									searchID3 = IDs[2]+dayNames[k];
+									if(document.getElementById(searchID1).checked){
+										newWH = {
+											dow: [k],
+											start: document.getElementById(searchID2).value,
+											end: document.getElementById(searchID3).value
+										}
+										daysOfWeek.push(newWH);
+									}
+								}
+								document.getElementById("whSelect").value = JSON.stringify(daysOfWeek);
+							});
+						});
+

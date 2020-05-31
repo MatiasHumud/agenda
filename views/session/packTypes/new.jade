@@ -4,11 +4,11 @@ block contenido
 	-if (user.permission == "Admin")
 		include ../session_permission/adminActions.jade
 	-else if (user.permission == "Branch")
-		include ../session_permission/branchActions.jade
+		include ../session_permission/benefactorActions.jade
 	-else if (user.permission == "Resource")
-		include ../session_permission/resourceActions.jade
+		include ../session_permission/beneficiaryActions.jade
 	-else
-		include ../session_permission/userActions.jade
+		include ../session_permission/benefactorActions.jade
 
 	main
 		div(class="container mx-auto col-xs-12 col-sm-6 top-space")
