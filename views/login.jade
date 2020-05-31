@@ -1,24 +1,24 @@
 extends ./layout.jade
 
 block contenido
-	-if (currentSession != null)
-		include ./session/session_permission/authActions.jade
-	-else
-		include ./session/session_permission/unauthActions.jade
+  -if (currentSession != null)
+    include ./session/session_permission/authActions.jade
+  -else
+    include ./session/session_permission/unauthActions.jade
 
-	div(class="top-space")
+  div(class="top-space")
 
-	main
-		h1(class="text-center") Iniciar Sesión
-		div(class="container mx-auto col-xs-12 col-sm-6 top-space")
-			form(action="/knock" method="POST" class="login")
-				div(class="form-group")
-					label(for="email") Email
-					input(type="text" name="email" placeholder="Email" id="email" class="form-control")
-				div(class="form-group")
-					label(for="password") Contraseña
-					input(type="password" name="password" placeholder="Contraseña" id="password" class="form-control")
-				div(class="d-flex justify-content-between align-items-center top-space")
-						input(type="submit" value="Enviar" class="btn btn-default btn-outline-dark")
-						div(class="text-right font-weight-light")
-							a(href="/registration") No tengo cuenta
+  main
+    h1(class="text-center") Iniciar Sesión
+    div(class="container mx-auto col-xs-12 col-sm-6 top-space")
+      form(action="/login" method="POST" class="login")
+        div(class="form-group")
+          label(for="email") Email
+          input(type="text" name="email" placeholder="Email" id="email" class="form-control")
+        div(class="form-group")
+          label(for="password") Contraseña
+          input(type="password" name="password" placeholder="Contraseña" id="password" class="form-control")
+        div(class="d-flex justify-content-between align-items-center top-space")
+            input(type="submit" value="Enviar" class="btn btn-default btn-outline-dark")
+            div(class="text-right font-weight-light")
+              a(href="/registration") No tengo cuenta

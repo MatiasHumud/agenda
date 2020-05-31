@@ -41,12 +41,7 @@ app.get('/login', (req, res) => {
 	res.render('login');
 });
 
-app.get('/logout', (req, res) => {
-	req.session.destroy();
-	res.redirect('/');
-});
-
-app.post('/knock', async (req, res) => {
+app.post('/login', async (req, res) => {
   let user;
 
   try {
@@ -64,6 +59,11 @@ app.post('/knock', async (req, res) => {
     console.log('No pudimos validar tu usuario');
     res.redirect('/login');
   }
+});
+
+app.get('/logout', (req, res) => {
+	req.session.destroy();
+	res.redirect('/');
 });
 
 app.use('/session', currentSessionMiddleware);
