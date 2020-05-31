@@ -9,13 +9,13 @@ router.get("/", function(req, res){
 	res.render("session/home");
 });
 
-router.get("/cuenta/edit", function(req, res){
-	res.render("session/cuenta/edit");
+router.get("/account/edit", function(req, res){
+	res.render("session/account/edit");
 });
 
-router.route("/cuenta")
+router.route("/account")
 	.get(function(req, res) {
-		res.render("session/cuenta/show", {user: res.locals.user});
+		res.render("session/account/show", {user: res.locals.user});
 	})
 	.put(function(req, res){
 		if(res.locals.user.password === req.body.oldPassword){
@@ -32,20 +32,20 @@ router.route("/cuenta")
 
 			res.locals.user.save(function(err){
 				if(!err){
-					res.redirect("/session/cuenta");
+					res.redirect("/session/account");
 				}
 				else{
 					console.log(err);
-					res.redirect("/session/cuenta/edit");
+					res.redirect("/session/account/edit");
 				}
 			})
 		}
 		else{
 			console.log("Incorrect password");
-			res.redirect("/session/cuenta/edit");
+			res.redirect("/session/account/edit");
 		}
 	})
-	.delete(function(req, res){//Borrar cuenta de usuario
+	.delete(function(req, res){
 
 	});
 

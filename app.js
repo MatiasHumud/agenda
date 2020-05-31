@@ -3,13 +3,12 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const { Benefactor, User } = require("./models/user.model");
 const session =require("express-session");
-const session_middleware = require("./middlewares/sessions");
+const sessionMiddleware = require("./middlewares/sessions");
 const methodOverride = require("method-override");
 const RedisStore = require("connect-redis")(session);
 const realtime = require("./realtime");
 const sessionRouter = require("./routes/session/session.router");
-const contractRouter = require("./routes/contract.router");
-const router_org = require("./routes/router_org");
+const contractRouter = require("./routes/contract/contract.router");
 
 const app = express();
 const server = http.Server(app);
@@ -94,9 +93,9 @@ app.post("/knock", async function(req, res) {
   }
 });
 
-app.use("/session", session_middleware);
+app.use("/session", sessionMiddleware);
 app.use("/session", sessionRouter);
-app.use("/session/documentos", contractRouter);
+app.use("/session/contract", contractRouter);
 app.use("/session/org", router_org);
 
 server.listen(3000, () => { console.log('Example app listening on port 3000!') });

@@ -13,7 +13,7 @@ block contenido
 	main
 		div(class="mx-auto col-xs-12 col-sm-6 top-space")
 			h1(class="text-center mb-3") Editar #{user.name}
-			form(action="/session/cuenta?_method=PUT" method="POST" id="accForm" name="accForm")
+			form(action="/session/account?_method=PUT" method="POST" id="accForm" name="accForm")
 				div(class="form-group")
 					label(for="name") Nombre
 					input(type="text" name="name" value="#{user.name}" id="name" class="form-control")

@@ -1,0 +1,53 @@
+extends ../../layout.jade
+
+block contenido
+  -if (user.permission == "Admin")
+    include ../session_permission/adminActions.jade
+  -else if (user.permission == "Branch")
+    include ../session_permission/benefactorActions.jade
+  -else if (user.permission == "Resource")
+    include ../session_permission/beneficiaryActions.jade
+  -else
+    include ../session_permission/benefactorActions.jade
+
+  main
+    div(class="container mx-auto col-xs-12 col-sm-6 top-space")
+      h1(class="text-center mb-5") Mi cuenta
+      div(class="form-group")
+        label(type="text" class="font-weight-bold mr-3" name="userType" id="userType") Tipo de cuenta:
+        -if(user.userType === "Admin")
+          label(for="userType")	Administrador
+        -else if (user.userType === "Beneficiary")
+          label(for="userType") Apadrinado
+        -else if (user.userType === "Benefactor")
+          label(for="userType") Padrino
+      div(class="form-group")
+        label(type="text" class="font-weight-bold mr-3" name="lastName" id="lastName") Nombre:
+        label(for="lastName") #{user.fullName}
+      div(class="form-group")
+        label(type="text" class="font-weight-bold mr-3" name="email" id="email") Correo electrónico:
+        label(for="lastName") #{user.email}
+      div(class="form-group")
+        label(type="text" class="font-weight-bold mr-3" name="documentNumber" id="documentNumber") #{user.documentType}:
+        label(for="addr") #{user.documentNumber}
+      div(class="form-group")
+        label(type="text" class="font-weight-bold mr-3" name="mobilePhone" id="mobilePhone") Número de teléfono:
+        label(for="addr") #{user.mobilePhone}
+      div(class="form-group")
+        label(type="text" class="font-weight-bold mr-3" name="birthDate" id="birthDate") Fecha de nacimiento:
+        label(for="addr") #{user.birthDate}
+      -if(user.userType === "Benefactor")
+        div(class="form-group")
+          label(type="text" class="font-weight-bold mr-3" name="contributionRange" id="contributionRange") Aporte:
+          label(for="contributionRange") #{user.contributionRange}
+      div(class="form-group")
+        label(type="text" class="font-weight-bold mr-3" name="email" id="gender") Género:
+        -if(user.gender === "F")
+          label(for="gender")	Mujer
+        -else if (user.gender === "M")
+          label(for="gender") Hombre
+      div(class="btn-group")
+        a(href="/session/account/edit" class="btn btn-default btn-outline-primary btn-lg" data-toggle="tooltip" data-placement="top" title="Editar")
+          i(class="fa fa-pencil-square-o")
+        a(href="/session" class="btn btn-default btn-outline-danger btn-lg" data-toggle="tooltip" data-placement="top" title="Volver")
+          i(class="fa fa-caret-square-o-left")
