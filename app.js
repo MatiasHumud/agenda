@@ -7,7 +7,7 @@ const currentSessionMiddleware = require('./middlewares/currentSession');
 const methodOverride = require('method-override');
 const RedisStore = require('connect-redis')(session);
 const realtime = require('./realtime');
-const accountRouter = require('./routes/account/account.router');
+const sessionRouter = require('./routes/session/session.router');
 const contractRouter = require('./routes/contract/contract.router');
 
 const app = express();
@@ -46,7 +46,6 @@ app.get('/logout', (req, res) => {
 });
 
 app.post('/newUser', async (req, res) => {
-  console.log('user_create_started');
   let benefactor;
 
   benefactor = await Benefactor.findOne({ email: req.body.email });
@@ -72,8 +71,7 @@ app.post('/newUser', async (req, res) => {
   }
 });
 
-app.post('/knock', async function(req, res) {
-  console.log('user_create_started');
+app.post('/knock', async (req, res) => {
   let user;
 
   try {
@@ -94,7 +92,7 @@ app.post('/knock', async function(req, res) {
 });
 
 app.use('/session', currentSessionMiddleware);
-app.use('/session', accountRouter);
+app.use('/session', sessionRouter);
 app.use('/session/contract', contractRouter);
 
 server.listen(3000, () => { console.log('Example app listening on port 3000!') });
