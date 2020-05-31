@@ -2,9 +2,6 @@ const express = require("express");
 const Contract = require("../../models/contract.model").Contract;
 const User = require("../../models/user.model").User;
 const router = express.Router();
-const fs = require("fs");
-const documentFinder = require("../../middlewares/documents/find-document");
-const docCollectionFinder = require("../../middlewares/documents/find-contracts");
 
 router.get("/new", function(req, res){
   res.render("session/contract/new",
@@ -17,15 +14,10 @@ router.get("/new", function(req, res){
     });
 });
 
-// Assign "documentFinder" middleware to every document/id request 
-router.all("/:id*", documentFinder);
-// Assign "availableSelection" middleware to every document/id/edit request 
-router.all("/:id/edit", availableSelection);
-// Despliega el formulario para edición de un documento específico
 router.get("/:id/edit", function(req, res){
   if(res.locals.documento.status != "ejecutado"){
-    res.render("session/contract/edit", 
-    { 
+    res.render("session/contract/edit",
+    {
       users: res.locals.users,
       branches: res.locals.branches,
       resources: res.locals.resources,
@@ -38,10 +30,6 @@ router.get("/:id/edit", function(req, res){
   }
 });
 
-// Assign "docCollectionFinder" middleware to every document collection request
-router.all("/", docCollectionFinder);
-
-//CRUD documentos específicos
 router.route("/:id")
   .get(function(req, res){//Mostrar documento seleccionado
     res.render("session/contract/show", {documento: res.locals.documento});
@@ -61,10 +49,10 @@ router.route("/:id")
       else{
         console.log(err);
         res.redirect("/session/contract/"+req.params.id+"/edit");
-      }				
+      }
     });
   })
-  .patch(function(req, res){//Actualizar estado del documento seleccionado
+  .patch(function(req, res){
     const newStat = undefined;
     switch (req.body.sBtn) {
       case "0":
@@ -93,7 +81,7 @@ router.route("/:id")
         else{
           console.log(err);
           res.redirect("/session/contract/"+req.params.id+"/edit");
-        }				
+        }
       });
     }
   })

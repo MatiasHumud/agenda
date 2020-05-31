@@ -1,51 +1,51 @@
-const http = require("http");
-const bodyParser = require("body-parser");
-const express = require("express");
-const { Benefactor, User } = require("./models/user.model");
-const session =require("express-session");
-const sessionMiddleware = require("./middlewares/sessions");
-const methodOverride = require("method-override");
-const RedisStore = require("connect-redis")(session);
-const realtime = require("./realtime");
-const sessionRouter = require("./routes/session/session.router");
-const contractRouter = require("./routes/contract/contract.router");
+const http = require('http');
+const bodyParser = require('body-parser');
+const express = require('express');
+const { Benefactor, User } = require('./models/user.model');
+const session =require('express-session');
+const currentSessionMiddleware = require('./middlewares/currentSession');
+const methodOverride = require('method-override');
+const RedisStore = require('connect-redis')(session);
+const realtime = require('./realtime');
+const accountRouter = require('./routes/account/account.router');
+const contractRouter = require('./routes/contract/contract.router');
 
 const app = express();
 const server = http.Server(app);
 
 const sessionMiddleware = session({
 	store: new RedisStore({}),
-	secret: "d6s5f9liofd5g146fvdf6156a"
+	secret: 'd6s5f9liofd5g146fvdf6156a'
 });
 
 realtime(server, sessionMiddleware);
 
-app.use(methodOverride("_method"));
-app.use("/public", express.static('public'));
+app.use(methodOverride('_method'));
+app.use('/public', express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(sessionMiddleware);
 
-app.set("view engine", "jade");
+app.set('view engine', 'jade');
 
-app.get("/", function(req, res) {
-	res.render("index", {currentSession: req.session.userId});
+app.get('/', (req, res) => {
+	res.render('index', { currentSession: req.session.userId });
 });
 
-app.get("/registration", function(req, res) {
-	res.render("registration");
+app.get('/registration', (req, res) => {
+	res.render('registration');
 });
 
-app.get("/login", function(req, res) {
-	res.render("login");
+app.get('/login', (req, res) => {
+	res.render('login');
 });
 
-app.get("/logout", function(req, res) {
+app.get('/logout', (req, res) => {
 	req.session.destroy();
-	res.redirect("/");
+	res.redirect('/');
 });
 
-app.post("/newUser", async (req, res) => {
+app.post('/newUser', async (req, res) => {
   console.log('user_create_started');
   let benefactor;
 
@@ -53,7 +53,7 @@ app.post("/newUser", async (req, res) => {
 
   if(benefactor) {
     console.log(`El correo ${benefactor.email} ya está registrado`);
-    res.redirect("/");
+    res.redirect('/');
     return;
   }
 
@@ -64,15 +64,15 @@ app.post("/newUser", async (req, res) => {
 
     console.log(`Guardamos tus datos: Email ${benefactor.email} / Password ${benefactor.password}`);
     req.session.userId = benefactor.userId;
-    res.redirect("/session");
+    res.redirect('/session');
   } catch (error) {
     console.log({ error });
-    console.log("No pudimos guardar tus datos");
-    res.redirect("/");
+    console.log('No pudimos guardar tus datos');
+    res.redirect('/');
   }
 });
 
-app.post("/knock", async function(req, res) {
+app.post('/knock', async function(req, res) {
   console.log('user_create_started');
   let user;
 
@@ -81,21 +81,20 @@ app.post("/knock", async function(req, res) {
     if(user){
       req.session.userId = user.userId;
       console.log(`Login: ${user.fullName}`);
-      res.redirect("/session");
+      res.redirect('/session');
       return;
     }
-    console.log("Datos Incorrectos");
-    res.redirect("/login");
+    console.log('Datos Incorrectos');
+    res.redirect('/login');
   } catch (error) {
     console.log({ error });
-    console.log("No pudimos validar tu usuario");
-    res.redirect("/login");
+    console.log('No pudimos validar tu usuario');
+    res.redirect('/login');
   }
 });
 
-app.use("/session", sessionMiddleware);
-app.use("/session", sessionRouter);
-app.use("/session/contract", contractRouter);
-app.use("/session/org", router_org);
+app.use('/session', currentSessionMiddleware);
+app.use('/session', accountRouter);
+app.use('/session/contract', contractRouter);
 
 server.listen(3000, () => { console.log('Example app listening on port 3000!') });
