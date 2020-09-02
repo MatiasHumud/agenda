@@ -17,7 +17,7 @@
     "express-session": "^1.17.1",
     "formidable": "^1.2.2",
     "fullcalendar": "^3.10.2",
-    "googleapis": "^27.0.0",
+    "googleapis": "^39.1.0",
     "jade": "^1.11.0",
     "jquery": "^3.5.1",
     "js-datepicker": "^3.3.7",
