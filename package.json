@@ -22,7 +22,7 @@
     "jquery": "^3.5.1",
     "js-datepicker": "^3.3.7",
     "method-override": "^2.3.10",
-    "moment": "^2.26.0",
+    "moment": "^2.29.2",
     "mongoose": "^5.9.16",
     "nodemailer": "^6.4.8",
     "nodemon": "^1.19.4",
